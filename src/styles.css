@@ -1,0 +1,112 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-brand-green: var(--brand-green);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --radius: 0.75rem;
+  /* Sampled from the BEMCO logo: blue #2D7FBD, green #A8CD44 */
+  --primary: oklch(0.57 0.12 245);
+  --primary-foreground: oklch(0.99 0 0);
+  --brand-green: oklch(0.8 0.17 124);
+  --background: oklch(0.995 0.002 90);
+  --surface: oklch(0.975 0.004 90);
+  --foreground: oklch(0.2 0.01 250);
+  --ink: oklch(0.16 0.01 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.01 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.01 250);
+  --secondary: oklch(0.96 0.006 240);
+  --secondary-foreground: oklch(0.2 0.01 250);
+  --muted: oklch(0.96 0.004 90);
+  --muted-foreground: oklch(0.5 0.012 250);
+  --accent: oklch(0.95 0.03 245);
+  --accent-foreground: oklch(0.35 0.1 245);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.91 0.006 250);
+  --input: oklch(0.91 0.006 250);
+  --ring: oklch(0.57 0.12 245);
+  --glass: oklch(1 0 0 / 72%);
+  --shadow-soft: 0 20px 50px -24px oklch(0.3 0.05 250 / 25%);
+  --gradient-veil: linear-gradient(90deg, oklch(1 0 0 / 92%) 0%, oklch(1 0 0 / 70%) 38%, oklch(1 0 0 / 0%) 70%);
+  --gradient-fade-up: linear-gradient(0deg, oklch(0.995 0.002 90) 0%, oklch(0.995 0.002 90 / 0%) 40%);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--brand-green); color: var(--ink); }
+}
+
+@utility container-x {
+  width: 100%;
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) { padding-inline: 2.5rem; }
+}
+@utility glass {
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+@utility shadow-soft { box-shadow: var(--shadow-soft); }
+@utility bg-veil { background-image: var(--gradient-veil); }
+@utility bg-fade-up { background-image: var(--gradient-fade-up); }
+@utility eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--primary);
+}
+@utility display {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+@utility grid-lines {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
