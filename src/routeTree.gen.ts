@@ -17,6 +17,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as QualityRouteImport } from './routes/quality'
+import { Route as QuotationRouteImport } from './routes/quotation'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as TermsRouteImport } from './routes/terms'
 
@@ -60,6 +61,11 @@ const QualityRoute = QualityRouteImport.update({
   path: '/quality',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuotationRoute = QuotationRouteImport.update({
+  id: '/quotation',
+  path: '/quotation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/products': typeof ProductsRoute
   '/projects': typeof ProjectsRoute
   '/quality': typeof QualityRoute
+  '/quotation': typeof QuotationRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
 }
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/products': typeof ProductsRoute
   '/projects': typeof ProjectsRoute
   '/quality': typeof QualityRoute
+  '/quotation': typeof QuotationRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
 }
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/products': typeof ProductsRoute
   '/projects': typeof ProjectsRoute
   '/quality': typeof QualityRoute
+  '/quotation': typeof QuotationRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
 }
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/projects'
     | '/quality'
+    | '/quotation'
     | '/services'
     | '/terms'
   fileRoutesByTo: FileRoutesByTo
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/projects'
     | '/quality'
+    | '/quotation'
     | '/services'
     | '/terms'
   id:
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/projects'
     | '/quality'
+    | '/quotation'
     | '/services'
     | '/terms'
   fileRoutesById: FileRoutesById
@@ -156,6 +168,7 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRoute
   ProjectsRoute: typeof ProjectsRoute
   QualityRoute: typeof QualityRoute
+  QuotationRoute: typeof QuotationRoute
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
 }
@@ -218,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QualityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quotation': {
+      id: '/quotation'
+      path: '/quotation'
+      fullPath: '/quotation'
+      preLoaderRoute: typeof QuotationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -244,6 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRoute,
   ProjectsRoute: ProjectsRoute,
   QualityRoute: QualityRoute,
+  QuotationRoute: QuotationRoute,
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
 }

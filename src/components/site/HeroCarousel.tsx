@@ -1,20 +1,42 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { images } from "@/lib/site";
 import { ArrowLink, ease } from "./motion";
 
 const slides = [
-  { img: images.hero1, title: "Engineering the Art of Architecture", text: "Architectural aluminium and glazing solutions designed around precision, performance and modern design.", label: "Curtain-wall façades" },
-  { img: images.hero2, title: "Façades That Define the Skyline", text: "Architectural façade systems and glazing solutions for contemporary developments.", label: "Structural glazing" },
-  { img: images.hero3, title: "Precision in Every Frame", text: "Aluminium windows, doors and architectural systems built around quality and detail.", label: "Windows & doors" },
-  { img: images.cta, title: "BEMCO Aluminium & Glass", text: "From design and fabrication to installation, architectural glazing for contemporary buildings.", label: "Architectural glazing" },
+  {
+    img: images.hero1,
+    title: "Engineering the Art of Architecture",
+    text: "Architectural aluminium and glazing solutions designed around precision, performance and modern design.",
+    label: "Curtain-wall façades",
+  },
+  {
+    img: images.hero2,
+    title: "Façades That Define the Skyline",
+    text: "Architectural façade systems and glazing solutions for contemporary developments.",
+    label: "Structural glazing",
+  },
+  {
+    img: images.hero3,
+    title: "Precision in Every Frame",
+    text: "Aluminium windows, doors and architectural systems built around quality and detail.",
+    label: "Windows & doors",
+  },
+  {
+    img: images.cta,
+    title: "BEMCO Aluminium & Glass",
+    text: "From design and fabrication to installation, architectural glazing for contemporary buildings.",
+    label: "Architectural glazing",
+  },
 ];
 
 export function HeroCarousel() {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
+  const touchStart = useRef<number | null>(null);
   const go = (d: number) => setI((p) => (p + d + slides.length) % slides.length);
 
   useEffect(() => {
@@ -26,7 +48,34 @@ export function HeroCarousel() {
   const s = slides[i];
   if (!s) return null;
   return (
-    <section className="relative h-[92svh] min-h-[640px] overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)} onBlurCapture={() => setPaused(false)} aria-label="BEMCO architectural systems" aria-roledescription="carousel">
+    <section
+      className="relative h-[92svh] min-h-[680px] overflow-hidden bg-ink"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowLeft") go(-1);
+        if (event.key === "ArrowRight") go(1);
+      }}
+      onTouchStart={(event) => {
+        touchStart.current = event.changedTouches[0]?.clientX ?? null;
+      }}
+      onTouchEnd={(event) => {
+        const end = event.changedTouches[0]?.clientX;
+        if (
+          touchStart.current !== null &&
+          end !== undefined &&
+          Math.abs(end - touchStart.current) > 48
+        ) {
+          go(end < touchStart.current ? 1 : -1);
+        }
+        touchStart.current = null;
+      }}
+      aria-label="BEMCO architectural systems"
+      aria-roledescription="carousel"
+      tabIndex={0}
+    >
       <AnimatePresence mode="sync">
         <motion.img
           key={s.img}
@@ -39,35 +88,107 @@ export function HeroCarousel() {
           transition={{ duration: 1.2, ease }}
         />
       </AnimatePresence>
-      <div className="absolute inset-0 bg-veil" />
-      <div className="absolute inset-0 bg-fade-up" />
+      <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/15" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/20" />
 
-      <div className="container-x relative flex h-full flex-col justify-center pt-20">
+      <div className="container-x relative flex h-full flex-col justify-center pb-16 pt-20">
         <AnimatePresence mode="wait">
-          <motion.div key={i} className="max-w-3xl" exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.4 }}>
-            <motion.div className="eyebrow flex items-center gap-3" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease }}>
+          <motion.div
+            key={i}
+            className="max-w-3xl"
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.4 }}
+          >
+            <motion.div
+              className="eyebrow flex items-center gap-3 !text-brand-green"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease }}
+            >
               <span className="h-px w-8 bg-brand-green" /> BEMCO Aluminium & Glass · Riyadh
             </motion.div>
-            <motion.h1 className="display mt-6 text-5xl text-ink sm:text-6xl lg:text-8xl" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.1 }}>
+            <motion.h1
+              className="display mt-6 text-5xl text-white sm:text-6xl lg:text-7xl"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease, delay: 0.1 }}
+            >
               {s.title}
             </motion.h1>
-            <motion.p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/75" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease, delay: 0.25 }}>
+            <motion.p
+              className="mt-6 max-w-xl text-lg leading-relaxed text-white/80"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease, delay: 0.25 }}
+            >
               {s.text}
             </motion.p>
-            <motion.div className="mt-10 flex flex-wrap gap-3" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease, delay: 0.4 }}>
-              <ArrowLink to="/projects">Explore Our Projects</ArrowLink>
-              <ArrowLink to="/contact" variant="outline">Request a Quotation</ArrowLink>
+            <motion.div
+              className="mt-10 flex flex-wrap gap-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease, delay: 0.4 }}
+            >
+              <ArrowLink to="/#expertise">Explore Our Expertise</ArrowLink>
+              <ArrowLink to="/contact" variant="outline">
+                Discuss Your Project
+              </ArrowLink>
             </motion.div>
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-x-0 bottom-8 flex justify-center gap-2" aria-label="Choose a hero photo">
-          {slides.map((slide, k) => (
-            <Button key={slide.img} variant="ghost" size="icon" onClick={() => setI(k)} aria-label={`Go to slide ${k + 1}`} aria-pressed={k === i} title={slide.label} className="relative h-11 w-11 rounded-full hover:bg-primary/10">
-              {k === i && <span aria-hidden="true" className="absolute h-5 w-5 rounded-full bg-primary/40 motion-safe:animate-ping" />}
-              <span aria-hidden="true" className={`relative h-3 w-3 rounded-full border-2 transition-colors ${k === i ? "border-primary bg-primary" : "border-ink/40 bg-background/80"}`} />
+        <div className="container-x absolute inset-x-0 bottom-7 flex items-center justify-between text-white">
+          <a
+            href="#company"
+            className="hidden items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/75 transition-colors hover:text-white sm:flex"
+          >
+            <span className="h-10 w-px bg-brand-green" /> Scroll to explore
+          </a>
+          <div
+            className="ml-auto flex items-center gap-1 sm:gap-3"
+            aria-label="Featured slide controls"
+          >
+            <span className="mr-1 text-sm tabular-nums text-white/80 sm:mr-2">
+              {String(i + 1).padStart(2, "0")}{" "}
+              <span className="text-white/40">/ {String(slides.length).padStart(2, "0")}</span>
+            </span>
+            {slides.map((slide, k) => (
+              <Button
+                key={slide.img}
+                variant="ghost"
+                size="icon"
+                onClick={() => setI(k)}
+                aria-label={`Go to slide ${k + 1}: ${slide.label}`}
+                aria-pressed={k === i}
+                title={slide.label}
+                className="h-9 w-9 rounded-full text-white hover:bg-white/15 hover:text-white"
+              >
+                <span
+                  aria-hidden="true"
+                  className={`h-2.5 w-2.5 rounded-full border transition-colors ${k === i ? "border-brand-green bg-brand-green" : "border-white/60 bg-transparent"}`}
+                />
+              </Button>
+            ))}
+            <span className="mx-1 hidden h-8 w-px bg-white/25 sm:block" />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => go(-1)}
+              aria-label="Previous featured slide"
+              className="h-10 w-10 rounded-full border border-white/35 text-white hover:border-brand-green hover:bg-brand-green hover:text-ink"
+            >
+              <ArrowLeft className="h-4 w-4" />
             </Button>
-          ))}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => go(1)}
+              aria-label="Next featured slide"
+              className="h-10 w-10 rounded-full border border-white/35 text-white hover:border-brand-green hover:bg-brand-green hover:text-ink"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </section>

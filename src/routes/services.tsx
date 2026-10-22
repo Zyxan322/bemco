@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CtaBand, ProductGrid, SectionHead } from "@/components/site/Sections";
 import { PageHero } from "@/components/site/motion";
 import { images } from "@/lib/site";
+import { FrequentlyAskedQuestions, ServicesOverview } from "@/components/site/HomeStory";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -11,12 +12,14 @@ export const Route = createFileRoute("/services")({
       { title: "Our Services | BEMCO Aluminium & Glass" },
       {
         name: "description",
-        content: "Explore BEMCO's aluminium, glass and façade systems, from SAPHIR and GEODE MX to OPALE CA and TECHNAL.",
+        content:
+          "Explore BEMCO's aluminium, glass and façade systems, from SAPHIR and GEODE MX to OPALE CA and TECHNAL.",
       },
       { property: "og:title", content: "Our Services | BEMCO Aluminium & Glass" },
       {
         property: "og:description",
-        content: "Explore BEMCO's aluminium, glass and façade systems, from SAPHIR and GEODE MX to OPALE CA and TECHNAL.",
+        content:
+          "Explore BEMCO's aluminium, glass and façade systems, from SAPHIR and GEODE MX to OPALE CA and TECHNAL.",
       },
     ],
   }),
@@ -28,20 +31,22 @@ function Services() {
     <>
       <PageHero
         eyebrow="Our Services"
-        title="We shape the life of tomorrow."
-        text="We consult, design, engineer and fabricate aluminium, glass and façade systems for projects across Saudi Arabia."
+        title="Aluminium, glass & façade solutions."
+        text="BEMCO consults, designs, engineers and manufactures products for architectural projects, with installation among its stated capabilities."
         img={images.hero2}
       />
-      <section className="container-x py-24">
+      <ServicesOverview />
+      <section className="container-x py-20 md:py-24">
         <SectionHead
-          eyebrow="Architecture & Engineering"
-          title="Explore our systems"
-          text="Discover the aluminium and glazing systems we design and manufacture for contemporary buildings."
+          eyebrow="Product systems"
+          title="Explore BEMCO’s aluminium & glazing systems"
+          text="Review the system families listed in the current BEMCO product catalogue."
         />
-        <div className="mt-12">
-          <ProductGrid category="Service" action="Explore Service" />
+        <div className="mt-10">
+          <ProductGrid category="System" action="Explore System" />
         </div>
       </section>
+      <FrequentlyAskedQuestions includeContact />
       <CtaBand />
     </>
   );
