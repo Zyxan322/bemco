@@ -1,31 +1,26 @@
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { images } from "@/lib/site";
 import { ArrowLink, ease } from "./motion";
+import { HeroBackgroundVideo } from "./HeroBackgroundVideo";
 
 const slides = [
   {
-    img: images.hero1,
     title: "Engineering the Art of Architecture",
     text: "Architectural aluminium and glazing solutions designed around precision, performance and modern design.",
     label: "Curtain-wall façades",
   },
   {
-    img: images.hero2,
     title: "Façades That Define the Skyline",
     text: "Architectural façade systems and glazing solutions for contemporary developments.",
     label: "Structural glazing",
   },
   {
-    img: images.hero3,
     title: "Precision in Every Frame",
     text: "Aluminium windows, doors and architectural systems built around quality and detail.",
     label: "Windows & doors",
   },
   {
-    img: images.cta,
     title: "BEMCO Aluminium & Glass",
     text: "From design and fabrication to installation, architectural glazing for contemporary buildings.",
     label: "Architectural glazing",
@@ -34,26 +29,19 @@ const slides = [
 
 export function HeroCarousel() {
   const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const reduce = useReducedMotion();
   const touchStart = useRef<number | null>(null);
   const go = (d: number) => setI((p) => (p + d + slides.length) % slides.length);
 
   useEffect(() => {
-    if (paused || reduce) return;
-    const t = setTimeout(() => go(1), 7000);
+    const t = setTimeout(() => go(1), 4000);
     return () => clearTimeout(t);
-  }, [i, paused, reduce]);
+  }, [i]);
 
   const s = slides[i];
   if (!s) return null;
   return (
     <section
       className="relative h-[92svh] min-h-[680px] overflow-hidden bg-ink"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
       onKeyDown={(event) => {
         if (event.key === "ArrowLeft") go(-1);
         if (event.key === "ArrowRight") go(1);
@@ -76,18 +64,7 @@ export function HeroCarousel() {
       aria-roledescription="carousel"
       tabIndex={0}
     >
-      <AnimatePresence mode="sync">
-        <motion.img
-          key={s.img}
-          src={s.img}
-          alt={s.label}
-          className="absolute inset-0 h-full w-full object-cover"
-          initial={{ opacity: 0, scale: 1.08, x: reduce ? 0 : 30 }}
-          animate={{ opacity: 1, scale: 1.02, x: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease }}
-        />
-      </AnimatePresence>
+      <HeroBackgroundVideo />
       <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/15" />
       <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/20" />
 
@@ -137,24 +114,17 @@ export function HeroCarousel() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="container-x absolute inset-x-0 bottom-7 flex items-center justify-between text-white">
+        <div className="container-x absolute inset-x-0 bottom-7 flex items-center justify-center text-white">
           <a
             href="#company"
-            className="hidden items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/75 transition-colors hover:text-white sm:flex"
+            className="absolute left-10 hidden items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/75 transition-colors hover:text-white sm:flex"
           >
             <span className="h-10 w-px bg-brand-green" /> Scroll to explore
           </a>
-          <div
-            className="ml-auto flex items-center gap-1 sm:gap-3"
-            aria-label="Featured slide controls"
-          >
-            <span className="mr-1 text-sm tabular-nums text-white/80 sm:mr-2">
-              {String(i + 1).padStart(2, "0")}{" "}
-              <span className="text-white/40">/ {String(slides.length).padStart(2, "0")}</span>
-            </span>
+          <div className="flex items-center gap-3" aria-label="Featured slide controls">
             {slides.map((slide, k) => (
               <Button
-                key={slide.img}
+                key={slide.label}
                 variant="ghost"
                 size="icon"
                 onClick={() => setI(k)}
@@ -165,29 +135,10 @@ export function HeroCarousel() {
               >
                 <span
                   aria-hidden="true"
-                  className={`h-2.5 w-2.5 rounded-full border transition-colors ${k === i ? "border-brand-green bg-brand-green" : "border-white/60 bg-transparent"}`}
+                  className={`h-2.5 w-2.5 rounded-full border transition-colors ${k === i ? "animate-pulse border-brand-green bg-brand-green motion-reduce:animate-none" : "border-white/60 bg-transparent"}`}
                 />
               </Button>
             ))}
-            <span className="mx-1 hidden h-8 w-px bg-white/25 sm:block" />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => go(-1)}
-              aria-label="Previous featured slide"
-              className="h-10 w-10 rounded-full border border-white/35 text-white hover:border-brand-green hover:bg-brand-green hover:text-ink"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => go(1)}
-              aria-label="Next featured slide"
-              className="h-10 w-10 rounded-full border border-white/35 text-white hover:border-brand-green hover:bg-brand-green hover:text-ink"
-            >
-              <ArrowRight className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </div>
