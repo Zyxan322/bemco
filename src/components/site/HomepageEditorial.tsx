@@ -192,27 +192,7 @@ export function HomepageVision() {
           <span className="h-px flex-1 bg-ink/15" />
           <span className="text-xs uppercase tracking-[0.2em] text-ink/45">Looking ahead</span>
         </div>
-        <div className="homepage-vision-grid grid items-center gap-5 md:grid-cols-[1.1fr_0.9fr] md:gap-7 lg:gap-12">
-          <Reveal>
-            <p className="eyebrow">Our vision</p>
-            <h2 className="display mt-3 max-w-3xl text-3xl leading-[1.08] text-ink sm:text-4xl md:text-[2.7rem]">
-              {companyProfileContent.visionTitle}
-            </h2>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-              {companyProfileContent.vision}
-            </p>
-            <details className="group mt-3 max-w-xl border-t border-ink/15 pt-3 text-sm leading-relaxed text-muted-foreground">
-              <summary className="w-fit cursor-pointer text-xs font-semibold text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
-                Read the complete vision
-              </summary>
-              <p className="mt-3">{companyProfileContent.visionDetails}</p>
-            </details>
-            <div className="mt-5">
-              <ArrowLink to="/services" variant="text">
-                Explore our capabilities
-              </ArrowLink>
-            </div>
-          </Reveal>
+        <div className="homepage-vision-grid grid items-center gap-5 md:grid-cols-[0.9fr_1.1fr] md:gap-7 lg:gap-12">
           <Reveal delay={0.12}>
             <motion.figure
               initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
@@ -235,6 +215,26 @@ export function HomepageVision() {
                 <span className="text-[0.6rem] text-white/70">BEMCO · 02</span>
               </figcaption>
             </motion.figure>
+          </Reveal>
+          <Reveal>
+            <p className="eyebrow">Our vision</p>
+            <h2 className="display mt-3 max-w-3xl text-3xl leading-[1.08] text-ink sm:text-4xl md:text-[2.7rem]">
+              {companyProfileContent.visionTitle}
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
+              {companyProfileContent.vision}
+            </p>
+            <details className="group mt-3 max-w-xl border-t border-ink/15 pt-3 text-sm leading-relaxed text-muted-foreground">
+              <summary className="w-fit cursor-pointer text-xs font-semibold text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+                Read the complete vision
+              </summary>
+              <p className="mt-3">{companyProfileContent.visionDetails}</p>
+            </details>
+            <div className="mt-5">
+              <ArrowLink to="/services" variant="text">
+                Explore our capabilities
+              </ArrowLink>
+            </div>
           </Reveal>
         </div>
       </div>
