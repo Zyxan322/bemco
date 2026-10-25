@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/Sections";
 import { images } from "@/lib/site";
@@ -21,7 +21,14 @@ export const Route = createFileRoute("/products")({
       },
     ],
   }),
-  component: () => (
+  component: ProductsPage,
+});
+
+function ProductsPage() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  if (pathname !== "/products" && pathname !== "/products/") return <Outlet />;
+
+  return (
     <>
       <PageHero
         eyebrow="Products & Systems"
@@ -50,5 +57,5 @@ export const Route = createFileRoute("/products")({
       <FrequentlyAskedQuestions includeContact />
       <CtaBand />
     </>
-  ),
-});
+  );
+}

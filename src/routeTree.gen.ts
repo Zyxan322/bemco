@@ -20,6 +20,8 @@ import { Route as QualityRouteImport } from './routes/quality'
 import { Route as QuotationRouteImport } from './routes/quotation'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +78,16 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductsSlugRoute = ProductsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ProjectsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -83,12 +95,14 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/manufacturing': typeof ManufacturingRoute
   '/privacy': typeof PrivacyRoute
-  '/products': typeof ProductsRoute
-  '/projects': typeof ProjectsRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/projects': typeof ProjectsRouteWithChildren
   '/quality': typeof QualityRoute
   '/quotation': typeof QuotationRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -96,12 +110,14 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/manufacturing': typeof ManufacturingRoute
   '/privacy': typeof PrivacyRoute
-  '/products': typeof ProductsRoute
-  '/projects': typeof ProjectsRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/projects': typeof ProjectsRouteWithChildren
   '/quality': typeof QualityRoute
   '/quotation': typeof QuotationRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -110,12 +126,14 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/manufacturing': typeof ManufacturingRoute
   '/privacy': typeof PrivacyRoute
-  '/products': typeof ProductsRoute
-  '/projects': typeof ProjectsRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/projects': typeof ProjectsRouteWithChildren
   '/quality': typeof QualityRoute
   '/quotation': typeof QuotationRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +149,8 @@ export interface FileRouteTypes {
     | '/quotation'
     | '/services'
     | '/terms'
+    | '/products/$slug'
+    | '/projects/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +164,8 @@ export interface FileRouteTypes {
     | '/quotation'
     | '/services'
     | '/terms'
+    | '/products/$slug'
+    | '/projects/$slug'
   id:
     | '__root__'
     | '/'
@@ -157,6 +179,8 @@ export interface FileRouteTypes {
     | '/quotation'
     | '/services'
     | '/terms'
+    | '/products/$slug'
+    | '/projects/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,8 +189,8 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ManufacturingRoute: typeof ManufacturingRoute
   PrivacyRoute: typeof PrivacyRoute
-  ProductsRoute: typeof ProductsRoute
-  ProjectsRoute: typeof ProjectsRoute
+  ProductsRoute: typeof ProductsRouteWithChildren
+  ProjectsRoute: typeof ProjectsRouteWithChildren
   QualityRoute: typeof QualityRoute
   QuotationRoute: typeof QuotationRoute
   ServicesRoute: typeof ServicesRoute
@@ -252,8 +276,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/products/$slug': {
+      id: '/products/$slug'
+      path: '/$slug'
+      fullPath: '/products/$slug'
+      preLoaderRoute: typeof ProductsSlugRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/projects/$slug': {
+      id: '/projects/$slug'
+      path: '/$slug'
+      fullPath: '/projects/$slug'
+      preLoaderRoute: typeof ProjectsSlugRouteImport
+      parentRoute: typeof ProjectsRoute
+    }
   }
 }
+
+interface ProductsRouteChildren {
+  ProductsSlugRoute: typeof ProductsSlugRoute
+}
+
+const ProductsRouteChildren: ProductsRouteChildren = {
+  ProductsSlugRoute: ProductsSlugRoute,
+}
+
+const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
+  ProductsRouteChildren,
+)
+
+interface ProjectsRouteChildren {
+  ProjectsSlugRoute: typeof ProjectsSlugRoute
+}
+
+const ProjectsRouteChildren: ProjectsRouteChildren = {
+  ProjectsSlugRoute: ProjectsSlugRoute,
+}
+
+const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
+  ProjectsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -261,8 +323,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ManufacturingRoute: ManufacturingRoute,
   PrivacyRoute: PrivacyRoute,
-  ProductsRoute: ProductsRoute,
-  ProjectsRoute: ProjectsRoute,
+  ProductsRoute: ProductsRouteWithChildren,
+  ProjectsRoute: ProjectsRouteWithChildren,
   QualityRoute: QualityRoute,
   QuotationRoute: QuotationRoute,
   ServicesRoute: ServicesRoute,

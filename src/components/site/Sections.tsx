@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, ChevronsLeftRight, Download } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { capabilities, facts, images, products, projects } from "@/lib/site";
+import { capabilities, companyProfile, facts, images, products, projects } from "@/lib/site";
 import { ArrowLink, Counter, Parallax, Reveal, SectionHead } from "./motion";
 
 export function FactsStrip() {
@@ -36,8 +36,8 @@ export function ProductGrid({
       {products.map((p, i) => (
         <Reveal key={p.id} delay={(i % 3) * 0.08}>
           <Link
-            to="/products"
-            hash={p.id}
+            to="/products/$slug"
+            params={{ slug: p.slug }}
             className="group relative block overflow-hidden rounded-2xl border border-border bg-card"
           >
             <div className="aspect-[4/3] overflow-hidden">
@@ -50,7 +50,7 @@ export function ProductGrid({
             </div>
             <div className="p-7 transition-transform duration-300 group-hover:-translate-y-1">
               <div className="text-xs font-semibold text-muted-foreground">
-                {String(i + 1).padStart(2, "0")} / {category}
+                {String(i + 1).padStart(2, "0")} / {p.category || category}
               </div>
               <h3 className="mt-2 text-2xl font-bold tracking-tight text-ink">{p.name}</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
@@ -80,7 +80,11 @@ export function ProjectMosaic() {
     <div className="grid auto-rows-[260px] gap-5 md:grid-cols-12 md:auto-rows-[300px]">
       {projects.map((p, i) => (
         <Reveal key={p.name} delay={(i % 3) * 0.08} className={spans[i] ?? ""}>
-          <Link to="/projects" className="group relative block h-full overflow-hidden rounded-2xl">
+          <Link
+            to="/projects/$slug"
+            params={{ slug: p.slug }}
+            className="group relative block h-full overflow-hidden rounded-2xl"
+          >
             <Parallax
               src={p.img}
               alt={p.name}
@@ -92,6 +96,9 @@ export function ProjectMosaic() {
                 <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                   {String(i + 1).padStart(2, "0")} · {p.location}
                 </div>
+                <span className="absolute right-4 top-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white">
+                  Image pending review
+                </span>
                 <h3 className="mt-1 text-xl font-bold text-ink">{p.name}</h3>
               </div>
               <ArrowUpRight className="h-5 w-5 text-ink transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
@@ -121,7 +128,8 @@ export function ProjectCarousel() {
         {projects.map((p) => (
           <Link
             key={p.name}
-            to="/projects"
+            to="/projects/$slug"
+            params={{ slug: p.slug }}
             className="group relative aspect-[3/4] w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl sm:w-[380px]"
           >
             <img
@@ -136,6 +144,9 @@ export function ProjectCarousel() {
               <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-green">
                 {p.type}
               </div>
+              <span className="absolute right-4 top-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white">
+                Image pending review
+              </span>
               <h3 className="mt-1 text-2xl font-bold">{p.name}</h3>
               <p className="text-sm text-white/70">{p.location}</p>
             </div>
@@ -232,20 +243,32 @@ export function CtaBand() {
             Tell us about your project and let’s discuss the right aluminium and glazing solution.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
-            <button
-              type="button"
-              disabled
-              aria-describedby="cta-profile-status"
-              className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-primary/50 px-6 py-3.5 text-sm font-semibold text-white"
-            >
-              <Download className="h-4 w-4" /> Download Our Profile
-            </button>
+            {companyProfile.available ? (
+              <a
+                href={companyProfile.path}
+                download={companyProfile.filename}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white"
+              >
+                <Download className="h-4 w-4" /> Download Our Profile
+              </a>
+            ) : (
+              <button
+                type="button"
+                disabled
+                aria-describedby="cta-profile-status"
+                className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-primary/50 px-6 py-3.5 text-sm font-semibold text-white"
+              >
+                <Download className="h-4 w-4" /> Company profile unavailable
+              </button>
+            )}
             <ArrowLink to="/contact" variant="outline">
               Discuss Your Project
             </ArrowLink>
           </div>
           <p id="cta-profile-status" className="mt-3 text-sm text-muted-foreground">
-            Company profile PDF coming soon.
+            {companyProfile.available
+              ? "Download the approved BEMCO company profile."
+              : `The approved PDF is not available yet. Add it at public${companyProfile.path}.`}
           </p>
         </Reveal>
       </div>
@@ -267,7 +290,7 @@ export function BeforeAfter() {
     <div
       ref={ref}
       role="slider"
-      aria-label="Facade transformation comparison"
+      aria-label="Unverified facade before and after image comparison"
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={Math.round(pos)}
@@ -288,22 +311,22 @@ export function BeforeAfter() {
     >
       <img
         src={images.after}
-        alt="Building facade after BEMCO installation"
+        alt="Unverified image labelled after; project association not confirmed"
         className="absolute inset-0 h-full w-full object-cover"
         draggable={false}
       />
       <img
         src={images.before}
-        alt="Building facade before renovation"
+        alt="Unverified image labelled before; project association not confirmed"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
         className="absolute inset-0 h-full w-full object-cover"
         draggable={false}
       />
       <span className="glass absolute left-4 top-4 rounded-full border border-border/60 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-ink">
-        Before
+        Before · verify
       </span>
       <span className="glass absolute right-4 top-4 rounded-full border border-border/60 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-ink">
-        After
+        After · verify
       </span>
       <div className="absolute inset-y-0" style={{ left: `${pos}%` }}>
         <div className="absolute inset-y-0 -left-px w-0.5 bg-card" />

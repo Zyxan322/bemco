@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/Sections";
-import { images } from "@/lib/site";
+import { companyStatistics, images } from "@/lib/site";
 import { FactsStrip } from "@/components/site/Sections";
 import {
   AboutCompany,
@@ -11,6 +11,7 @@ import {
   MissionStatement,
   VisionStatement,
 } from "@/components/site/HomeStory";
+import { CeoMessage } from "@/components/site/HomepageEditorial";
 import { Reveal } from "@/components/site/motion";
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -20,12 +21,12 @@ export const Route = createFileRoute("/about")({
       { title: "About Us | BEMCO Aluminium & Glass" },
       {
         name: "description",
-        content: "Building Experts Co. for Metal Industries, founded in January 2017 in Riyadh.",
+        content: `Building Experts Co. for Metal Industries, founded in January ${companyStatistics.foundedYear} in Riyadh.`,
       },
       { property: "og:title", content: "About Us | BEMCO" },
       {
         property: "og:description",
-        content: "Building Experts Co. for Metal Industries, founded in January 2017 in Riyadh.",
+        content: `Building Experts Co. for Metal Industries, founded in January ${companyStatistics.foundedYear} in Riyadh.`,
       },
     ],
   }),
@@ -34,7 +35,7 @@ export const Route = createFileRoute("/about")({
       <PageHero
         eyebrow="About Us"
         title="Building Experts Co. for Metal Industries."
-        text="Founded in Riyadh in 2017, BEMCO works across architectural aluminium, glass and façade systems."
+        text="A Saudi Arabia-based company specializing in architectural aluminum and glass systems."
         img={images.hero1}
       />
       <section className="bg-[#f4f6f7] py-12">
@@ -69,6 +70,7 @@ export const Route = createFileRoute("/about")({
       <div id="company-story">
         <AboutCompany />
       </div>
+      <CeoMessage />
       <CompanyProfileDownload />
       <MissionStatement />
       <VisionStatement />

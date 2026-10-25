@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/Sections";
-import { images } from "@/lib/site";
+import { images, products } from "@/lib/site";
 import { ContactEnquiry, FrequentlyAskedQuestions } from "@/components/site/HomeStory";
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    product: products.find((product) => product.name === search.product)?.name,
+  }),
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -23,7 +26,12 @@ export const Route = createFileRoute("/contact")({
       },
     ],
   }),
-  component: () => (
+  component: ContactPage,
+});
+
+function ContactPage() {
+  const { product } = Route.useSearch();
+  return (
     <>
       <PageHero
         eyebrow="Contact Us"
@@ -31,9 +39,9 @@ export const Route = createFileRoute("/contact")({
         text="Contact BEMCO in Riyadh to discuss your architectural aluminium, glazing or façade requirements."
         img={images.skylight}
       />
-      <ContactEnquiry />
+      <ContactEnquiry product={product} />
       <FrequentlyAskedQuestions />
       <CtaBand />
     </>
-  ),
-});
+  );
+}

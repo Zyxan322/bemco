@@ -1,10 +1,10 @@
 import {
+  animate,
   motion,
   useInView,
   useReducedMotion,
   useScroll,
   useTransform,
-  animate,
 } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
@@ -70,21 +70,28 @@ export function Parallax({
 
 export function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true });
-  const [v, setV] = useState(0);
-  const isYear = to > 1900 && to < 2100;
+  const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
+  const reduceMotion = useReducedMotion();
+  const [value, setValue] = useState(0);
+
   useEffect(() => {
     if (!inView) return;
-    const c = animate(isYear ? to - 30 : 0, to, {
-      duration: 1.6,
-      ease,
-      onUpdate: (n) => setV(Math.round(n)),
+    if (reduceMotion) {
+      setValue(to);
+      return;
+    }
+
+    const animation = animate(0, to, {
+      duration: 1.8,
+      ease: "easeOut",
+      onUpdate: (latest) => setValue(Math.round(latest)),
     });
-    return () => c.stop();
-  }, [inView, to, isYear]);
+    return () => animation.stop();
+  }, [inView, reduceMotion, to]);
+
   return (
-    <span ref={ref}>
-      {isYear ? v : v.toLocaleString("en-US")}
+    <span ref={ref} aria-live="off">
+      {value.toLocaleString("en-US")}
       {suffix}
     </span>
   );

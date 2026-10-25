@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { PageHero } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/Sections";
 import { images, products } from "@/lib/site";
+import { submitEnquiry } from "@/lib/enquiry";
 
 const projectTypes = [
   "Commercial building",
@@ -25,9 +27,10 @@ const serviceOptions = [
 ];
 
 function QuotationRequest() {
-  const [notice, setNotice] = useState("");
-
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submitEnquiryFn = useServerFn(submitEnquiry);
+  const [notice, setNotice] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
@@ -35,8 +38,7 @@ function QuotationRequest() {
     const data = new FormData(form);
     const services = data.getAll("services");
     const selectedProducts = data.getAll("products");
-    const subject = `Quotation request — ${String(data.get("projectName"))}`;
-    const body = [
+    const message = [
       "BEMCO quotation request",
       "",
       `Contact name: ${data.get("name")}`,
@@ -56,10 +58,33 @@ function QuotationRequest() {
       String(data.get("brief")),
     ].join("\n");
 
-    setNotice(
-      "Your email app should open with the project details ready. You can attach drawings or documents to that email before sending.",
-    );
-    window.location.href = `mailto:info@bemcoalu.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setSubmitting(true);
+    setNotice(null);
+    try {
+      await submitEnquiryFn({
+        data: {
+          name: String(data.get("name") ?? ""),
+          company: String(data.get("company") ?? ""),
+          email: String(data.get("email") ?? ""),
+          phone: String(data.get("phone") ?? ""),
+          subject: `Quotation request: ${String(data.get("projectName") ?? "")}`,
+          message,
+          website: String(data.get("website") ?? ""),
+        },
+      });
+      setNotice({ type: "success", message: "Your quotation request has been sent to BEMCO." });
+      form.reset();
+    } catch (error) {
+      setNotice({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "We could not send your request. Please try again or contact BEMCO directly.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -86,7 +111,7 @@ function QuotationRequest() {
                 "Tell us what kind of building or project you have.",
                 "Select the services and product systems you want to discuss.",
                 "Include your location and any known project area.",
-                "Add further context or attach drawings in your email app.",
+                "Add relevant context to your project brief.",
               ].map((item) => (
                 <li key={item} className="flex gap-3 text-sm leading-relaxed text-foreground/80">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> {item}
@@ -121,6 +146,8 @@ function QuotationRequest() {
                   <input
                     name="name"
                     required
+                    minLength={2}
+                    maxLength={100}
                     autoComplete="name"
                     className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
@@ -131,6 +158,7 @@ function QuotationRequest() {
                     name="email"
                     type="email"
                     required
+                    maxLength={254}
                     autoComplete="email"
                     className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
@@ -139,6 +167,7 @@ function QuotationRequest() {
                   Company
                   <input
                     name="company"
+                    maxLength={120}
                     autoComplete="organization"
                     className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
@@ -148,6 +177,7 @@ function QuotationRequest() {
                   <input
                     name="phone"
                     type="tel"
+                    maxLength={40}
                     autoComplete="tel"
                     className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
@@ -163,6 +193,7 @@ function QuotationRequest() {
                   <input
                     name="projectName"
                     required
+                    maxLength={80}
                     className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
                 </label>
@@ -267,6 +298,8 @@ function QuotationRequest() {
                 <textarea
                   name="brief"
                   required
+                  minLength={10}
+                  maxLength={4000}
                   rows={5}
                   placeholder="Describe the work you would like BEMCO to review."
                   className="mt-2 block w-full resize-y rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -274,20 +307,32 @@ function QuotationRequest() {
               </label>
             </fieldset>
 
+            <label
+              aria-hidden="true"
+              className="absolute -left-[10000px] h-px w-px overflow-hidden"
+            >
+              Leave this field empty
+              <input name="website" tabIndex={-1} autoComplete="off" />
+            </label>
             <div className="border-t border-border pt-6">
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink"
+                disabled={submitting}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink disabled:cursor-wait disabled:opacity-60"
               >
-                Prepare quotation request <ArrowRight className="h-4 w-4" />
+                {submitting ? "Sending request…" : "Send quotation request"}
+                {!submitting && <ArrowRight className="h-4 w-4" />}
               </button>
               <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-                This website prepares an email in your email application; it does not transmit or
-                store the form. Attach plans or specifications to the email before sending if
-                useful.
+                Your request is sent securely to BEMCO for follow-up. Do not include sensitive
+                personal or financial information.
               </p>
-              <p role="status" aria-live="polite" className="mt-3 text-sm text-primary">
-                {notice}
+              <p
+                role={notice?.type === "error" ? "alert" : "status"}
+                aria-live={notice?.type === "error" ? "assertive" : "polite"}
+                className={`mt-3 text-sm ${notice?.type === "error" ? "text-destructive" : "text-primary"}`}
+              >
+                {notice?.message}
               </p>
             </div>
           </form>

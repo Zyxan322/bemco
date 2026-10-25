@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/Sections";
-import { projects } from "@/lib/site";
+import { images } from "@/lib/site";
 import { ProjectCarousel, ProjectMosaic, SectionHead } from "@/components/site/Sections";
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -26,13 +26,13 @@ export const Route = createFileRoute("/projects")({
         eyebrow="Our Projects"
         title="Our Projects"
         text="Explore selected architectural aluminium, glass and façade projects from BEMCO’s portfolio."
-        img={projects[0]!.img}
+        img={images.hero2}
       />
       <section className="container-x py-20 md:py-28">
         <SectionHead
           eyebrow="Selected work"
           title="Projects across a range of building types."
-          text="Project names and locations are presented as currently listed in BEMCO’s portfolio."
+          text="Project names, types and locations are shown as currently listed in BEMCO’s portfolio. Image associations, client details and project scopes require confirmation."
         />
         <div className="mt-12">
           <ProjectMosaic />

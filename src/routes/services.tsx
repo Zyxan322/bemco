@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CtaBand, ProductGrid, SectionHead } from "@/components/site/Sections";
+import { CtaBand } from "@/components/site/Sections";
 import { PageHero } from "@/components/site/motion";
 import { images } from "@/lib/site";
 import { FrequentlyAskedQuestions, ServicesOverview } from "@/components/site/HomeStory";
@@ -36,16 +36,6 @@ function Services() {
         img={images.hero2}
       />
       <ServicesOverview />
-      <section className="container-x py-20 md:py-24">
-        <SectionHead
-          eyebrow="Product systems"
-          title="Explore BEMCO’s aluminium & glazing systems"
-          text="Review the system families listed in the current BEMCO product catalogue."
-        />
-        <div className="mt-10">
-          <ProductGrid category="System" action="Explore System" />
-        </div>
-      </section>
       <FrequentlyAskedQuestions includeContact />
       <CtaBand />
     </>

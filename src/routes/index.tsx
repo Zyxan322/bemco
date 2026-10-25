@@ -10,13 +10,17 @@ import {
 } from "@/components/site/Sections";
 import { ArrowLink } from "@/components/site/motion";
 import {
+  CeoMessage,
+  HomepageCompanyOverview,
+  HomepageMission,
+  HomepageVision,
+} from "@/components/site/HomepageEditorial";
+import {
   CurtainWallFeature,
   ExpertiseExplorer,
   HomeCapabilities,
-  MissionStatement,
   ProjectJourney,
   QualityAndIndustries,
-  VisionStatement,
   WhyBemco,
 } from "@/components/site/HomeStory";
 
@@ -45,49 +49,44 @@ function Index() {
   return (
     <>
       <HeroCarousel />
-      <ProjectJourney />
-      <section className="bg-[#f4f6f7] py-8 md:py-12">
-        <div className="container-x">
-          <FactsStrip />
-        </div>
-      </section>
-      <HomeCapabilities />
-      <MissionStatement />
-      <VisionStatement />
-      <ExpertiseExplorer />
-      <section className="bg-[#eff5f6] py-24 md:py-32">
+      <HomepageCompanyOverview />
+      <HomepageMission />
+      <HomepageVision />
+      <CeoMessage />
+      <section className="bg-[#f4f6f7] py-12 md:py-16">
         <div className="container-x">
           <SectionHead
-            eyebrow="Our Services"
-            title="Excellence in architecture & engineering"
-            text="We consult, design, engineer and fabricate aluminium, glass and façade systems for projects across Saudi Arabia."
+            eyebrow="Company statistics"
+            title="BEMCO at a glance."
+            text="Company figures reported in BEMCO’s existing company information."
           />
-          <div className="mt-12">
-            <ProductGrid category="Service" action="Explore Service" />
+          <div className="mt-8">
+            <FactsStrip />
           </div>
         </div>
       </section>
-      <CurtainWallFeature />
-      <section className="container-x py-24">
+      <section className="container-x py-20 md:py-28">
         <SectionHead
-          eyebrow="Transformation"
-          title="Before & After"
-          text="Drag the slider to see what a BEMCO facade system does to a building — from bare structure to a finished architectural envelope."
+          eyebrow="Products & systems"
+          title="Architectural systems for project requirements."
+          text="Explore BEMCO’s listed aluminium, glass and façade product systems."
         />
         <div className="mt-12">
-          <BeforeAfter />
+          <ProductGrid category="System" action="Explore System" />
         </div>
       </section>
+      <HomeCapabilities />
       <section className="overflow-hidden bg-ink py-24 md:py-32">
         <div className="container-x">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
-              <p className="eyebrow !text-brand-green">Selected work</p>
+              <p className="eyebrow !text-brand-green">Featured projects</p>
               <h2 className="display mt-5 text-4xl text-white md:text-5xl">
                 Projects shaped around place.
               </h2>
               <p className="mt-5 text-lg leading-relaxed text-white/65">
-                Explore selected projects from BEMCO’s portfolio.
+                Explore selected project listings from BEMCO’s portfolio. Project image associations
+                are marked for review where not yet verified.
               </p>
             </div>
             <ArrowLink to="/projects" variant="outline">
@@ -97,6 +96,19 @@ function Index() {
           <ProjectCarousel />
         </div>
       </section>
+      <section className="container-x py-24">
+        <SectionHead
+          eyebrow="Image review"
+          title="Before & after comparison"
+          text="The current image files do not include project provenance. These images are marked for BEMCO review and are not presented as verified project work."
+        />
+        <div className="mt-12">
+          <BeforeAfter />
+        </div>
+      </section>
+      <ProjectJourney />
+      <ExpertiseExplorer />
+      <CurtainWallFeature />
       <WhyBemco />
       <QualityAndIndustries />
       <CtaBand />

@@ -2,7 +2,15 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Download } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
-import { capabilities, images, projects } from "@/lib/site";
+import { useServerFn } from "@tanstack/react-start";
+import {
+  capabilities,
+  companyProfile,
+  companyProfileContent,
+  companyStatistics,
+  images,
+} from "@/lib/site";
+import { submitEnquiry } from "@/lib/enquiry";
 import {
   Accordion,
   AccordionContent,
@@ -100,8 +108,8 @@ export function MissionStatement() {
       label: "Glass & aluminium systems",
     },
     {
-      src: projects[0]?.img ?? images.hero3,
-      alt: "Selected BEMCO building project",
+      src: images.hero3,
+      alt: "Architectural façade image",
       label: "Project delivery",
     },
   ];
@@ -186,15 +194,12 @@ export function MissionStatement() {
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="eyebrow !text-brand-green">Our mission · proposed</p>
+          <p className="eyebrow !text-brand-green">Our mission</p>
           <h2 className="display mt-5 text-4xl leading-tight text-white md:text-5xl">
-            Deliver quality aluminium and glass solutions through professional engineering and
-            trusted partnerships.
+            {companyProfileContent.missionTitle}
           </h2>
           <p className="mt-6 text-base leading-relaxed text-white/70">
-            This proposed mission brings together BEMCO’s published focus on quality management,
-            professional teams, investment in manufacturing technology and customer-oriented, honest
-            business relationships.
+            {companyProfileContent.mission} {companyProfileContent.missionDetails}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ArrowLink to="/services" variant="outline">
@@ -219,14 +224,12 @@ export function VisionStatement() {
     <section id="vision" className="scroll-mt-20 bg-[#eff5f6] py-20 md:py-28">
       <div className="container-x grid items-center gap-12 lg:grid-cols-2">
         <Reveal className="order-2 lg:order-1">
-          <p className="eyebrow">Our vision · proposed</p>
+          <p className="eyebrow">Our vision</p>
           <h2 className="display mt-5 text-4xl text-ink md:text-6xl">
-            Grow as a trusted regional partner for architectural aluminium and glass.
+            {companyProfileContent.visionTitle}
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            This proposed vision reflects BEMCO’s published ambition to remain competitive, invest
-            in its capabilities and expand through domestic partnerships and across the wider Gulf
-            region.
+            {companyProfileContent.vision} {companyProfileContent.visionDetails}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <ArrowLink to="/services" variant="text">
@@ -288,8 +291,8 @@ const expertise = [
   {
     title: "Installation & inspection",
     text: "Project delivery continues on site, where installation and quality checks contribute to the completed work.",
-    img: projects[0]?.img ?? images.hero1,
-    alt: "Building façade project",
+    img: images.hero1,
+    alt: "Architectural façade",
   },
 ];
 
@@ -482,22 +485,23 @@ export function ProjectJourney() {
   return (
     <section id="company" className="scroll-mt-24 bg-[#f4f6f7] py-20 md:py-28">
       <div className="container-x">
-        <SectionHead
-          eyebrow="Our process"
-          title="From first conversation to finished work."
-          text="A straightforward overview of how we work with you through an architectural aluminium and glazing project."
-        />
+        <Reveal className="max-w-2xl">
+          <p className="eyebrow text-ink">Our process</p>
+          <h2 className="display mt-5 text-4xl text-ink md:text-5xl">
+            From first conversation to finished work.
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-ink">
+            A straightforward overview of how we work with you through an architectural aluminium
+            and glazing project.
+          </p>
+        </Reveal>
         <ol className="mt-12 grid gap-y-8 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-0">
           {journey.map((step, index) => (
             <li key={step.title} className="relative h-full">
               <Reveal delay={index * 0.08} className="h-full border-t border-primary/30 pt-5">
-                <span className="text-xs font-bold tracking-[0.18em] text-primary">
-                  0{index + 1}
-                </span>
+                <span className="text-xs font-bold tracking-[0.18em] text-ink">0{index + 1}</span>
                 <h3 className="mt-3 text-xl font-bold text-ink">{step.title}</h3>
-                <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                  {step.text}
-                </p>
+                <p className="mt-2 max-w-xs text-sm leading-relaxed text-ink">{step.text}</p>
               </Reveal>
               {index < journey.length - 1 && (
                 <>
@@ -514,7 +518,7 @@ export function ProjectJourney() {
             </li>
           ))}
         </ol>
-        <p className="mt-10 border-t border-border pt-5 text-xs leading-relaxed text-muted-foreground">
+        <p className="mt-10 border-t border-border pt-5 text-xs leading-relaxed text-ink">
           Project scope and sequence vary; work follows the approved project information and
           applicable site requirements.
         </p>
@@ -573,22 +577,18 @@ export function QualityAndIndustries() {
   const applications = [
     {
       label: "Commercial",
-      project: projects.find((project) => project.type === "Commercial"),
       img: images.hero1,
     },
     {
       label: "Healthcare",
-      project: projects.find((project) => project.type === "Healthcare"),
       img: images.hero2,
     },
     {
       label: "Hospitality",
-      project: projects.find((project) => project.type === "Hospitality"),
       img: images.cta,
     },
     {
       label: "Institutional",
-      project: projects.find((project) => project.type === "Institutional"),
       img: images.hero3,
     },
   ];
@@ -647,7 +647,7 @@ export function QualityAndIndustries() {
                   className="group relative block aspect-[4/5] overflow-hidden rounded-2xl bg-ink"
                 >
                   <img
-                    src={application.project?.img ?? application.img}
+                    src={application.img}
                     alt=""
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -672,23 +672,23 @@ export function QualityAndIndustries() {
   );
 }
 
-export function AboutCompany() {
+export function AboutCompany({ includeReach = true }: { includeReach?: boolean }) {
   return (
     <>
       <section className="container-x grid items-center gap-12 py-20 md:py-28 lg:grid-cols-[1fr_0.9fr]">
         <Reveal>
-          <p className="eyebrow">Building Experts Co. for Metal Industries</p>
+          <p className="eyebrow">Company overview · Building Experts Co. for Metal Industries</p>
           <h2 className="display mt-5 text-4xl text-ink md:text-5xl">
             An aluminium and glass partner, based in Riyadh.
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            Established in January 2017, BEMCO consults, designs, engineers, fabricates and installs
-            architectural aluminium and glass solutions. Its work brings products and technical
-            coordination together for projects in Saudi Arabia and the wider region.
+            {companyProfileContent.overview}
           </p>
           <p className="mt-4 leading-relaxed text-muted-foreground">
-            The company describes investment in advanced manufacturing machinery and technology as
-            part of its effort to build a competitive operation and serve its clients.
+            Its expertise includes curtain wall systems, aluminum windows and doors, structural
+            glazing, aluminum cladding, frameless glass systems, skylights and related metal works.
+            BEMCO coordinates engineering, fabrication and installation to support project quality,
+            finish and specifications.
           </p>
           <div className="mt-8">
             <ArrowLink to="/services">Explore our services</ArrowLink>
@@ -705,39 +705,41 @@ export function AboutCompany() {
           </div>
         </Reveal>
       </section>
-      <section className="bg-[#eff5f6] py-20 md:py-24">
-        <div className="container-x grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-          <div>
-            <p className="eyebrow">Our reach</p>
-            <h2 className="display mt-5 text-3xl text-ink md:text-4xl">
-              Growing through partnerships.
-            </h2>
+      {includeReach && (
+        <section className="bg-[#eff5f6] py-20 md:py-24">
+          <div className="container-x grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+            <div>
+              <p className="eyebrow">Our reach</p>
+              <h2 className="display mt-5 text-3xl text-ink md:text-4xl">
+                Growing through partnerships.
+              </h2>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <article className="border-t-2 border-primary pt-5">
+                <h3 className="text-xl font-bold text-ink">A Saudi foundation</h3>
+                <p className="mt-3 leading-relaxed text-muted-foreground">
+                  BEMCO is based in Riyadh and reports established partnerships with domestic
+                  companies.
+                </p>
+              </article>
+              <article className="border-t-2 border-brand-green pt-5">
+                <h3 className="text-xl font-bold text-ink">Regional ambition</h3>
+                <p className="mt-3 leading-relaxed text-muted-foreground">
+                  The company reports expanding its market to cities including Jeddah, Dammam, Taif,
+                  Jizan and Rafha, as well as the Middle East and Gulf area.
+                </p>
+              </article>
+              <article className="border-t-2 border-primary pt-5 sm:col-span-2">
+                <h3 className="text-xl font-bold text-ink">Quality and partnership</h3>
+                <p className="mt-3 leading-relaxed text-muted-foreground">
+                  BEMCO’s published company overview highlights quality management, professional
+                  teams, customer-oriented service and sincere, honest business partnerships.
+                </p>
+              </article>
+            </div>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2">
-            <article className="border-t-2 border-primary pt-5">
-              <h3 className="text-xl font-bold text-ink">A Saudi foundation</h3>
-              <p className="mt-3 leading-relaxed text-muted-foreground">
-                BEMCO is based in Riyadh and reports established partnerships with domestic
-                companies.
-              </p>
-            </article>
-            <article className="border-t-2 border-brand-green pt-5">
-              <h3 className="text-xl font-bold text-ink">Regional ambition</h3>
-              <p className="mt-3 leading-relaxed text-muted-foreground">
-                The company reports expanding its market to cities including Jeddah, Dammam, Taif,
-                Jizan and Rafha, as well as the Middle East and Gulf area.
-              </p>
-            </article>
-            <article className="border-t-2 border-primary pt-5 sm:col-span-2">
-              <h3 className="text-xl font-bold text-ink">Quality and partnership</h3>
-              <p className="mt-3 leading-relaxed text-muted-foreground">
-                BEMCO’s published company overview highlights quality management, professional
-                teams, customer-oriented service and sincere, honest business partnerships.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 }
@@ -750,19 +752,33 @@ export function CompanyProfileDownload() {
           <p className="eyebrow">Company profile</p>
           <h2 className="mt-2 text-2xl font-bold text-ink">BEMCO company profile</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            The profile PDF will be available here once supplied.
+            The company profile PDF is not present in the project files yet. Add the approved file
+            at <code className="rounded bg-muted px-1.5 py-0.5">public{companyProfile.path}</code>{" "}
+            to enable downloads.
           </p>
         </div>
-        <button
-          type="button"
-          disabled
-          aria-describedby="profile-download-status"
-          className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full bg-primary/40 px-6 py-3.5 text-sm font-semibold text-white"
-        >
-          <Download className="h-4 w-4" /> Download profile · Coming soon
-        </button>
+        {companyProfile.available ? (
+          <a
+            href={companyProfile.path}
+            download={companyProfile.filename}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink"
+          >
+            <Download className="h-4 w-4" /> Download company profile
+          </a>
+        ) : (
+          <button
+            type="button"
+            disabled
+            aria-describedby="profile-download-status"
+            className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full bg-primary/40 px-6 py-3.5 text-sm font-semibold text-white"
+          >
+            <Download className="h-4 w-4" /> Profile PDF unavailable
+          </button>
+        )}
         <span id="profile-download-status" className="sr-only">
-          Download is unavailable until the company profile PDF is added.
+          {companyProfile.available
+            ? "Download the BEMCO company profile PDF."
+            : `The company profile PDF is missing from public${companyProfile.path}.`}
         </span>
       </div>
     </section>
@@ -774,62 +790,42 @@ export function ServicesOverview() {
     {
       id: "consult",
       number: "01",
-      title: "Consultation, design & engineering",
-      text: "Discuss the brief, drawings, system options and technical coordination needed to define an aluminium and glazing scope for your project.",
+      title: "Consultation & project coordination",
+      text: "Discuss project briefs, drawings, system options and the technical coordination needed for an aluminium and glazing project.",
       image: images.detail,
       alt: "Architectural aluminium frame detail",
       link: "/quotation",
       action: "Discuss a project",
     },
     {
-      id: "curtain-wall",
+      id: "design-engineering",
       number: "02",
-      title: "Curtain-wall systems",
-      text: "Aluminium-framed façade systems for glazed building envelopes. System configuration and interfaces are reviewed against project requirements.",
+      title: "Design & engineering",
+      text: "Design and engineer architectural aluminium, glass and façade solutions to suit project requirements.",
       image: images.hero2,
       alt: "Glass and aluminium building façade",
-      link: "/products#geode-mx",
-      action: "Explore GEODE MX",
+      link: "/quotation",
+      action: "Discuss a project",
     },
     {
-      id: "structural-glazing",
+      id: "manufacturing",
       number: "03",
-      title: "Structural glazing",
-      text: "Glazed façade solutions with a more continuous glass appearance. Design, compatible components and supporting details must be coordinated for each project.",
-      image: images.cta,
-      alt: "Contemporary glazed building exterior",
-      link: "/products#geode-mx",
-      action: "Discuss glazing options",
-    },
-    {
-      id: "windows-doors",
-      number: "04",
-      title: "Aluminium windows & doors",
-      text: "Casement, sliding and door systems for building projects, with product selection guided by the opening, design intent and specifications.",
+      title: "Manufacturing & fabrication",
+      text: "Manufacture and fabricate aluminium window, door and glass-panel products at BEMCO’s Riyadh facility.",
       image: images.hero3,
-      alt: "Aluminium windows and façade systems",
-      link: "/products#saphir",
-      action: "Explore window & door systems",
-    },
-    {
-      id: "glass-skylights",
-      number: "05",
-      title: "Glass panels & skylights",
-      text: "Glazed elements for façades and roof applications. Requirements depend on the project's design, interfaces and selected system.",
-      image: images.skylight,
-      alt: "Glazed roof and skylight structure",
-      link: "/products#opale-ca",
-      action: "Explore OPALE CA",
-    },
-    {
-      id: "fabrication-installation",
-      number: "06",
-      title: "Fabrication & installation",
-      text: "BEMCO connects product manufacture with installation as part of its stated capabilities. The exact scope and sequence are confirmed for each project.",
-      image: projects[0]?.img ?? images.hero1,
-      alt: "Building façade project under construction",
+      alt: "Aluminium window and façade systems",
       link: "/manufacturing",
       action: "Explore manufacturing",
+    },
+    {
+      id: "installation",
+      number: "04",
+      title: "Installation & project delivery",
+      text: "Installation is among BEMCO’s stated capabilities; the exact scope and sequence are confirmed for each project.",
+      image: images.skylight,
+      alt: "Glazed architectural structure",
+      link: "/contact",
+      action: "Discuss delivery",
     },
   ];
   return (
@@ -927,11 +923,14 @@ export function ManufacturingOverview() {
       </section>
       <section className="bg-ink py-20 text-white md:py-24">
         <div className="container-x">
-          <SectionHead
-            eyebrow="Typical workflow"
-            title="A coordinated journey."
-            text="A high-level illustration of how requirements can progress through design, manufacturing and site delivery."
-          />
+          <Reveal className="max-w-2xl">
+            <p className="eyebrow !text-brand-green">Typical workflow</p>
+            <h2 className="display mt-5 text-4xl text-white md:text-5xl">A coordinated journey.</h2>
+            <p className="mt-5 text-lg leading-relaxed text-white/75">
+              A high-level illustration of how requirements can progress through design,
+              manufacturing and site delivery.
+            </p>
+          </Reveal>
           <div className="mt-12">
             <Timeline />
           </div>
@@ -1051,25 +1050,47 @@ export function FrequentlyAskedQuestions({ includeContact = false }: { includeCo
   );
 }
 
-export function ContactEnquiry() {
-  const [notice, setNotice] = useState("");
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+export function ContactEnquiry({ product }: { product?: string }) {
+  const submitEnquiryFn = useServerFn(submitEnquiry);
+  const [notice, setNotice] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.currentTarget;
+    if (!form.reportValidity()) return;
     const formData = new FormData(event.currentTarget);
-    const subject = `Project enquiry from ${String(formData.get("name"))}`;
-    const body = [
-      `Name: ${formData.get("name")}`,
-      `Email: ${formData.get("email")}`,
-      `Company: ${formData.get("company") || "Not provided"}`,
-      `Phone: ${formData.get("phone") || "Not provided"}`,
-      "",
-      "Project details:",
-      String(formData.get("message")),
-    ].join("\n");
-    setNotice(
-      "Your email app should open with your enquiry ready to send. If it does not, email info@bemcoalu.com directly.",
-    );
-    window.location.href = `mailto:info@bemcoalu.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setSubmitting(true);
+    setNotice(null);
+    try {
+      await submitEnquiryFn({
+        data: {
+          name: String(formData.get("name") ?? ""),
+          company: String(formData.get("company") ?? ""),
+          email: String(formData.get("email") ?? ""),
+          phone: String(formData.get("phone") ?? ""),
+          subject: product ? `Product enquiry: ${product}` : String(formData.get("subject") ?? ""),
+          message: [
+            product ? `Product / system: ${product}` : "",
+            String(formData.get("message") ?? ""),
+          ]
+            .filter(Boolean)
+            .join("\n\n"),
+          website: String(formData.get("website") ?? ""),
+        },
+      });
+      setNotice({ type: "success", message: "Thank you. Your enquiry has been sent to BEMCO." });
+      form.reset();
+    } catch (error) {
+      setNotice({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "We could not send your enquiry. Please try again or contact BEMCO directly.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -1078,8 +1099,7 @@ export function ContactEnquiry() {
         <p className="eyebrow">Start a conversation</p>
         <h2 className="display mt-5 text-4xl text-ink md:text-5xl">Tell us about your project.</h2>
         <p className="mt-5 leading-relaxed text-muted-foreground">
-          Share a few details and your email app will prepare an enquiry to BEMCO. No information is
-          submitted to this website.
+          Share your contact details and enquiry. Your message will be sent securely to BEMCO.
         </p>
         <div className="mt-8 space-y-4 text-sm">
           <p>
@@ -1111,10 +1131,12 @@ export function ContactEnquiry() {
       >
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block text-sm font-semibold text-ink">
-            Your name
+            Full name *
             <input
               name="name"
               required
+              minLength={2}
+              maxLength={100}
               autoComplete="name"
               className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
@@ -1125,6 +1147,7 @@ export function ContactEnquiry() {
               name="email"
               type="email"
               required
+              maxLength={254}
               autoComplete="email"
               className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
@@ -1133,6 +1156,7 @@ export function ContactEnquiry() {
             Company <span className="font-normal text-muted-foreground">(optional)</span>
             <input
               name="company"
+              maxLength={120}
               autoComplete="organization"
               className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
@@ -1142,28 +1166,70 @@ export function ContactEnquiry() {
             <input
               name="phone"
               type="tel"
+              maxLength={40}
               autoComplete="tel"
               className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </label>
         </div>
         <label className="block text-sm font-semibold text-ink">
+          Subject / enquiry type *
+          <select
+            name="subject"
+            required
+            defaultValue={product ? "Products & systems" : ""}
+            className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          >
+            <option value="" disabled>
+              Select an enquiry type
+            </option>
+            <option>General enquiry</option>
+            <option>Project enquiry</option>
+            <option>Quotation request</option>
+            <option>Products & systems</option>
+            <option>Manufacturing</option>
+          </select>
+        </label>
+        {product && (
+          <label className="block text-sm font-semibold text-ink">
+            Product / system
+            <input
+              name="product"
+              value={product}
+              readOnly
+              className="mt-2 block w-full rounded-xl border border-input bg-muted px-4 py-3 font-normal text-muted-foreground"
+            />
+          </label>
+        )}
+        <label className="block text-sm font-semibold text-ink">
           How can we help?
           <textarea
             name="message"
             required
+            minLength={10}
+            maxLength={5000}
             rows={5}
             className="mt-2 block w-full resize-y rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </label>
+        <label aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+          Leave this field empty
+          <input name="website" tabIndex={-1} autoComplete="off" />
+        </label>
         <button
           type="submit"
+          disabled={submitting}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink"
         >
-          Prepare email enquiry <ArrowRight className="h-4 w-4" />
+          {submitting ? "Sending enquiry…" : "Send enquiry"}
+          {!submitting && <ArrowRight className="h-4 w-4" />}
         </button>
-        <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
-          {notice}
+        <p
+          role={notice?.type === "error" ? "alert" : "status"}
+          aria-live={notice?.type === "error" ? "assertive" : "polite"}
+          className={`text-sm ${notice?.type === "error" ? "text-destructive" : "text-primary"}`}
+        >
+          {notice?.message}
         </p>
       </form>
     </section>

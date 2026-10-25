@@ -12,6 +12,7 @@ import project3 from "@/assets/WhatsApp Image 2026-10-18 at 1.54.57 AM.jpeg";
 import project4 from "@/assets/WhatsApp Image 2026-10-18 at 1.54.57 AM (1).jpeg";
 import project5 from "@/assets/WhatsApp Image 2026-10-18 at 1.54.57 AM (2).jpeg";
 import project6 from "@/assets/WhatsApp Image 2026-10-18 at 1.54.58 AM.jpeg";
+import companyProfilePdf from "@/assets/BEMCO Profile (1).pdf?url";
 
 export const images = { hero1, hero2, hero3, detail, skylight, cta, before, after };
 
@@ -25,6 +26,12 @@ export const contact = {
   hours: "Sat–Thu, 8:00–18:00",
 };
 
+export const companyProfile = {
+  path: companyProfilePdf,
+  filename: "BEMCO-Company-Profile.pdf",
+  available: true,
+} as const;
+
 export const nav = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
@@ -36,91 +43,186 @@ export const nav = [
   { to: "/contact", label: "Contact Us" },
 ] as const;
 
-// Figures as stated on bemcoaluksa.com / company profile.
+// Figures reported in BEMCO's existing company information.
+export const companyStatistics = {
+  foundedYear: 2017,
+  factoryAreaSqm: 2000,
+  workforce: 51,
+  annualProductionCapacitySqm: 45000,
+} as const;
+
+export const companyProfileContent = {
+  overview:
+    "BEMCO Aluminum & Glass, operating under Building Experts Co. for Metal Industries, is a Saudi Arabia-based company specializing in architectural aluminum and glass solutions. The company focuses on the design, engineering, fabrication and installation of aluminum and glazing systems for construction projects.",
+  missionTitle: "Turning Architectural Designs into Practical Solutions",
+  mission:
+    "Our mission is to deliver reliable aluminum and glass systems through professional engineering, precise fabrication and quality installation.",
+  missionDetails:
+    "We strive to understand the specific requirements of every project and coordinate our work in line with approved drawings, technical specifications and client expectations. Through skilled workmanship, effective planning and collaboration between engineering, production and site teams, we aim to maintain consistent standards, meet project requirements and provide dependable service throughout the project lifecycle.",
+  visionTitle: "Shaping the Future of Architectural Aluminum & Glass",
+  vision:
+    "To strengthen BEMCO Aluminum & Glass as a trusted provider of architectural aluminum, glazing and façade solutions in Saudi Arabia. We aspire to contribute to modern construction through innovative system solutions, advanced manufacturing practices and a consistent focus on quality.",
+  visionDetails:
+    "Our vision is to continuously develop our technical capabilities, enhance our production processes and build lasting relationships with clients, consultants and contractors. We aim to support evolving architectural requirements by delivering solutions that combine visual appeal, functionality and dependable performance.",
+} as const;
+
 export const facts = [
-  { value: 2017, suffix: "", label: "Founded in January" },
-  { value: 2000, suffix: "+ m²", label: "Factory area" },
-  { value: 51, suffix: "+", label: "Workforce" },
-  { value: 45000, suffix: " m²", label: "Annual windows & doors capacity, incl. glass panels" },
+  { value: companyStatistics.foundedYear, suffix: "", label: "Founded in January" },
+  { value: companyStatistics.factoryAreaSqm, suffix: "+ m²", label: "Reported factory area" },
+  { value: companyStatistics.workforce, suffix: "", label: "Total listed manpower" },
+  {
+    value: companyStatistics.annualProductionCapacitySqm,
+    suffix: "+ m²",
+    label: "Reported annual capacity",
+  },
 ];
 
 export const products = [
   {
     id: "saphir",
+    slug: "saphir",
     name: "SAPHIR",
+    category: "Window & door system",
     desc: "Compatible and mixable door, casement and sliding window suites.",
     img: hero3,
+    features: [
+      "Door suites",
+      "Casement window suites",
+      "Sliding window suites",
+      "Compatible and mixable suites",
+    ],
+    specifications: [],
+    related: ["saphir-topaze", "opale-ca", "titane-ph"],
   },
   {
     id: "titane-ph",
+    slug: "titane-ph",
     name: "TITANE PH",
+    category: "Handle",
     desc: "Technal exclusive handle with optional signature logo on the pad handle.",
     img: detail,
+    features: ["Technal exclusive handle", "Optional signature logo on the pad handle"],
+    specifications: [],
+    related: ["technal", "saphir", "saphir-topaze"],
   },
   {
     id: "geode-mx",
+    slug: "geode-mx",
     name: "GEODE MX",
+    category: "Curtain wall",
     desc: "Curtain wall with grid, horizontal or vertical line effects and structural glazing toggle. Infills from 6 to 42 mm.",
     img: hero2,
+    features: [
+      "Grid, horizontal or vertical line effects",
+      "Structural glazing toggle",
+      "Infills from 6 to 42 mm",
+    ],
+    specifications: [{ label: "Infill range", value: "6–42 mm" }],
+    related: ["opale-ca", "saphir", "technal"],
   },
   {
     id: "opale-ca",
+    slug: "opale-ca",
     name: "OPALE CA",
+    category: "Curtain wall",
     desc: "A unique structure for a wide range of personalised aesthetics.",
     img: skylight,
+    features: ["A structure designed for a wide range of personalised aesthetics"],
+    specifications: [],
+    related: ["geode-mx", "saphir", "saphir-topaze"],
   },
   {
     id: "saphir-topaze",
+    slug: "saphir-topaze",
     name: "SAPHIR & TOPAZE",
+    category: "Window & door system",
     desc: "Compatible and mixable door, casement and sliding window suites.",
     img: hero1,
+    features: [
+      "Door suites",
+      "Casement window suites",
+      "Sliding window suites",
+      "Compatible and mixable suites",
+    ],
+    specifications: [],
+    related: ["saphir", "opale-ca", "titane-ph"],
   },
   {
     id: "technal",
+    slug: "technal",
     name: "TECHNAL",
+    category: "Product system",
     desc: "Technal systems with the exclusive pad handle and optional signature logo.",
     img: cta,
+    features: ["Exclusive pad handle", "Optional signature logo"],
+    specifications: [],
+    related: ["titane-ph", "saphir", "geode-mx"],
   },
 ];
 
 export const projects = [
-  { name: "Hadab Tower", location: "Riyadh", type: "Commercial", img: project1 },
-  { name: "Sheikh Abdul Rahman Tower", location: "Al-Ahsa", type: "Commercial", img: project2 },
-  { name: "Abha Hotel", location: "Abha", type: "Hospitality", img: project3 },
-  { name: "Philippine Embassy", location: "Riyadh", type: "Institutional", img: project4 },
-  { name: "Qwqaa Medical City", location: "Saudi Arabia", type: "Healthcare", img: project5 },
-  { name: "Al Dawoud Building", location: "Saudi Arabia", type: "Commercial", img: project6 },
+  {
+    slug: "hadab-tower",
+    name: "Hadab Tower",
+    location: "Riyadh",
+    type: "Commercial",
+    img: project1,
+  },
+  {
+    slug: "sheikh-abdul-rahman-tower",
+    name: "Sheikh Abdul Rahman Tower",
+    location: "Al-Ahsa",
+    type: "Commercial",
+    img: project2,
+  },
+  { slug: "abha-hotel", name: "Abha Hotel", location: "Abha", type: "Hospitality", img: project3 },
+  {
+    slug: "philippine-embassy",
+    name: "Philippine Embassy",
+    location: "Riyadh",
+    type: "Institutional",
+    img: project4,
+  },
+  {
+    slug: "qwqaa-medical-city",
+    name: "Qwqaa Medical City",
+    location: "Saudi Arabia",
+    type: "Healthcare",
+    img: project5,
+  },
+  {
+    slug: "al-dawoud-building",
+    name: "Al Dawoud Building",
+    location: "Saudi Arabia",
+    type: "Commercial",
+    img: project6,
+  },
 ];
 
 export const capabilities = [
   {
-    title: "Architectural aluminium systems",
-    desc: "Design, engineering and fabrication of aluminium systems for modern buildings.",
+    title: "Consultation & project coordination",
+    desc: "Discuss project briefs, drawings, system options and technical coordination requirements.",
     img: detail,
   },
   {
-    title: "Glass panels & glazing",
-    desc: "Glass panels produced and fitted alongside our window and door systems.",
+    title: "Design & engineering",
+    desc: "Design and engineer architectural aluminium, glass and façade solutions for projects.",
     img: hero2,
   },
   {
-    title: "Aluminium doors & windows",
-    desc: "Casement, sliding and door suites built for performance and finish.",
+    title: "Manufacturing",
+    desc: "Manufacture aluminium windows, doors and glass panels at BEMCO's Riyadh facility.",
     img: hero3,
   },
   {
-    title: "Curtain-wall façades",
-    desc: "Façade systems for towers and commercial developments.",
+    title: "Fabrication & installation",
+    desc: "Connect product fabrication with on-site installation as part of the agreed project scope.",
     img: hero1,
   },
   {
-    title: "Skylights",
-    desc: "Glazed roof structures that bring daylight deep into buildings.",
-    img: skylight,
-  },
-  {
-    title: "Fabrication & installation",
-    desc: "From our Riyadh factory to installation on site.",
+    title: "Quality checks & handover",
+    desc: "Coordinate inspection and handover with the approved project information and site requirements.",
     img: detail,
   },
 ];

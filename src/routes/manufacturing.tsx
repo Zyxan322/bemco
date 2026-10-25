@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/Sections";
-import { images } from "@/lib/site";
+import { companyStatistics, images } from "@/lib/site";
 import { ManufacturingOverview } from "@/components/site/HomeStory";
 export const Route = createFileRoute("/manufacturing")({
   head: () => ({
@@ -11,14 +11,12 @@ export const Route = createFileRoute("/manufacturing")({
       { title: "Manufacturing | BEMCO Aluminium & Glass" },
       {
         name: "description",
-        content:
-          "A factory of more than 2,000 m² with capacity of 45,000 m² of windows and doors a year.",
+        content: `A factory of more than ${companyStatistics.factoryAreaSqm.toLocaleString("en-US")} m² with capacity of ${companyStatistics.annualProductionCapacitySqm.toLocaleString("en-US")} m² of windows and doors a year.`,
       },
       { property: "og:title", content: "Manufacturing | BEMCO" },
       {
         property: "og:description",
-        content:
-          "A factory of more than 2,000 m² with capacity of 45,000 m² of windows and doors a year.",
+        content: `A factory of more than ${companyStatistics.factoryAreaSqm.toLocaleString("en-US")} m² with capacity of ${companyStatistics.annualProductionCapacitySqm.toLocaleString("en-US")} m² of windows and doors a year.`,
       },
     ],
   }),
@@ -27,7 +25,7 @@ export const Route = createFileRoute("/manufacturing")({
       <PageHero
         eyebrow="Manufacturing"
         title="Riyadh-based manufacturing."
-        text="BEMCO reports a factory area exceeding 2,000 m² and annual production capacity of 45,000 m² for windows and doors, including glass panels."
+        text="BEMCO's reported factory area and annual processing capacity are shown below, alongside its manufacturing capabilities."
         img={images.hero3}
       />
       <ManufacturingOverview />
