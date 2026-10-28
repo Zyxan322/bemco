@@ -1,14 +1,12 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import ceoPortrait from "@/assets/CEO.PNG";
-import overviewImage from "@/assets/WhatsApp Image 2026-10-18 at 1.54.56 AM.jpeg";
+import ceoPortrait from "@/assets/ceo-portrait.webp";
+import overviewImage from "@/assets/project-1.webp";
 import { companyProfileContent, companyStatistics, contact, images } from "@/lib/site";
 import { ArrowLink, Counter, Parallax, Reveal } from "./motion";
 
 export function HomepageCompanyOverview() {
-  const reduceMotion = useReducedMotion();
-
   return (
     <section className="homepage-motion homepage-overview relative overflow-hidden bg-white py-10 md:py-14">
       <div className="container-x">
@@ -55,13 +53,7 @@ export function HomepageCompanyOverview() {
             </div>
           </Reveal>
           <Reveal delay={0.12}>
-            <motion.figure
-              initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
-              whileInView={{ clipPath: "inset(0 0 0% 0)" }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="homepage-overview-photo relative ml-auto w-full max-w-[210px] lg:max-w-[300px]"
-            >
+            <figure className="homepage-overview-photo relative ml-auto w-full max-w-[210px] lg:max-w-[300px]">
               <div className="homepage-overview-image relative aspect-[4/3] overflow-hidden bg-[#e8edf0]">
                 <img
                   src={overviewImage}
@@ -80,7 +72,7 @@ export function HomepageCompanyOverview() {
                   Project and image association pending confirmation
                 </span>
               </figcaption>
-            </motion.figure>
+            </figure>
           </Reveal>
         </div>
       </div>
@@ -194,13 +186,7 @@ export function HomepageVision() {
         </div>
         <div className="homepage-vision-grid grid items-center gap-5 md:grid-cols-[0.9fr_1.1fr] md:gap-7 lg:gap-12">
           <Reveal delay={0.12}>
-            <motion.figure
-              initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
-              whileInView={{ clipPath: "inset(0 0 0% 0)" }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="homepage-vision-visual relative mx-auto aspect-[4/3] w-full overflow-hidden bg-ink shadow-[0_18px_45px_rgba(15,23,42,0.08)]"
-            >
+            <figure className="homepage-vision-visual relative mx-auto aspect-[4/3] w-full overflow-hidden bg-ink shadow-[0_18px_45px_rgba(15,23,42,0.08)]">
               <Parallax
                 src={images.hero3}
                 alt="Modern glazed building façade"
@@ -214,7 +200,7 @@ export function HomepageVision() {
                 </span>
                 <span className="text-[0.6rem] text-white/70">BEMCO · 02</span>
               </figcaption>
-            </motion.figure>
+            </figure>
           </Reveal>
           <Reveal>
             <p className="eyebrow">Our vision</p>

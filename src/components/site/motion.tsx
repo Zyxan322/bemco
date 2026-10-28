@@ -55,8 +55,13 @@ export function Parallax({
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [-strength, strength]);
+  const fullBleed = typeof className === "string" && className.includes("absolute");
+
   return (
-    <div ref={ref} className={cn("relative overflow-hidden", className)}>
+    <div
+      ref={ref}
+      className={cn("relative overflow-hidden", className, fullBleed && "h-full")}
+    >
       <motion.img
         src={src}
         alt={alt}

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
-import logo from "@/assets/Bemco Logo.png";
+import logo from "@/assets/bemco-logo.webp";
 import { companyStatistics, contact, nav, products } from "@/lib/site";
 import { Counter } from "./motion";
 

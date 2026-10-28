@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Menu, X, ArrowRight, Phone, Mail, MapPin, Clock } from "lucide-react";
 import { useEffect, useState } from "react";
-import logo from "@/assets/Bemco Logo.png";
+import logo from "@/assets/bemco-logo.webp";
 import { contact, nav } from "@/lib/site";
 import { ease } from "./motion";
 
