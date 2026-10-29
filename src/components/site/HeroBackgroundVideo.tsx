@@ -5,9 +5,22 @@ const posterFrame = "/hero-sequence/ezgif-frame-001.jpg";
 
 export function HeroBackgroundVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoReady, setVideoReady] = useState(true);
+  const [videoEnabled, setVideoEnabled] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+    );
+    const updateVideoEnabled = () => setVideoEnabled(mediaQuery.matches);
+    updateVideoEnabled();
+    mediaQuery.addEventListener("change", updateVideoEnabled);
+
+    return () => mediaQuery.removeEventListener("change", updateVideoEnabled);
+  }, []);
+
+  useEffect(() => {
+    if (!videoEnabled) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -50,24 +63,26 @@ export function HeroBackgroundVideo() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("pageshow", startPlayback);
     };
-  }, []);
+  }, [videoEnabled]);
 
   return (
     <>
-      <video
-        ref={videoRef}
-        src={heroVideo}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        aria-hidden="true"
-        onLoadedData={() => setVideoReady(true)}
-        onCanPlay={() => setVideoReady(true)}
-        onError={() => console.error(`Hero background video failed to load: ${heroVideo}`)}
-        className="absolute inset-0 h-full w-full object-cover object-center opacity-100"
-      />
+      {videoEnabled && (
+        <video
+          ref={videoRef}
+          src={heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          onLoadedData={() => setVideoReady(true)}
+          onCanPlay={() => setVideoReady(true)}
+          onError={() => console.error(`Hero background video failed to load: ${heroVideo}`)}
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-100"
+        />
+      )}
       <img
         src={posterFrame}
         alt=""

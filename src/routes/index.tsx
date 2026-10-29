@@ -47,7 +47,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <>
+    <div className="homepage">
       <HeroCarousel />
       <HomepageCompanyOverview />
       <HomepageMission />
@@ -114,6 +114,6 @@ function Index() {
       <WhyBemco />
       <QualityAndIndustries />
       <CtaBand />
-    </>
+    </div>
   );
 }

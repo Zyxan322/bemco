@@ -41,7 +41,7 @@ export function HeroCarousel() {
   if (!s) return null;
   return (
     <section
-      className="relative h-[92svh] min-h-[680px] overflow-hidden bg-ink"
+      className="homepage-hero relative h-[92svh] min-h-[560px] overflow-hidden bg-ink sm:min-h-[680px]"
       onKeyDown={(event) => {
         if (event.key === "ArrowLeft") go(-1);
         if (event.key === "ArrowRight") go(1);
@@ -78,7 +78,7 @@ export function HeroCarousel() {
           >
             <motion.div
               className="eyebrow flex items-center gap-3 !text-brand-green"
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease }}
             >
@@ -86,7 +86,7 @@ export function HeroCarousel() {
             </motion.div>
             <motion.h1
               className="display mt-6 text-5xl text-white sm:text-6xl lg:text-7xl"
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease, delay: 0.1 }}
             >
@@ -94,7 +94,7 @@ export function HeroCarousel() {
             </motion.h1>
             <motion.p
               className="mt-6 max-w-xl text-lg leading-relaxed text-white/80"
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease, delay: 0.25 }}
             >
@@ -102,7 +102,7 @@ export function HeroCarousel() {
             </motion.p>
             <motion.div
               className="mt-10 flex flex-wrap gap-3"
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease, delay: 0.4 }}
             >
