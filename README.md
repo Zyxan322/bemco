@@ -26,7 +26,24 @@ bun run dev
 
 ## Deploy to Vercel
 
-Import this GitHub repository in Vercel and use `bun install --frozen-lockfile` as the install command and `bun run build` as the build command. Leave the output directory unset so Nitro can provide Vercel's deployment output. The Vite config selects Nitro's Vercel preset when the build runs in Vercel; other environments keep the Cloudflare preset.
+Import this GitHub repository in Vercel with the repository root as the project root. Use
+`bun install --frozen-lockfile` as the install command and `bun run build` as the build command.
+Leave the output directory unset: Nitro selects its Vercel preset from Vercel's build environment
+and generates the deployment package in `.vercel/output`, including the Node.js serverless function
+and static assets. Other environments continue to use the Cloudflare preset.
+
+To verify the Vercel deployment package locally in PowerShell, run:
+
+```powershell
+$env:VERCEL = "1"
+bun run build
+Remove-Item Env:\VERCEL
+```
+
+Configure the required production environment variables listed below in Vercel's project settings
+for every environment that should send enquiries. The site can build without these secrets, but
+contact and quotation submissions will report that the enquiry service is not configured until
+they are added.
 
 ## Enquiry form setup
 

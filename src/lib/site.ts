@@ -5,7 +5,7 @@ import detail from "@/assets/detail.webp";
 import skylight from "@/assets/skylight.webp";
 import cta from "@/assets/cta.webp";
 import before from "@/assets/before.png";
-import after from "@/assets/after.png";
+import after from "@/assets/After.png";
 import project1 from "@/assets/project-1.webp";
 import project2 from "@/assets/project-2.webp";
 import project3 from "@/assets/project-3.webp";
