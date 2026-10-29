@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, MapPin } from "lucide-react";
 import { PageHero } from "@/components/site/motion";
 import { CtaBand, SectionHead } from "@/components/site/Sections";
 import { images, projects } from "@/lib/site";
+import { Reveal } from "@/components/site/motion";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
@@ -43,23 +44,25 @@ function ProjectDetail() {
           <ArrowLeft className="h-4 w-4" /> All projects
         </Link>
         <div className="mt-8 grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
-          <div>
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-muted">
-              <img
-                src={project.img}
-                alt={`${project.name} project image; project association pending verification`}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <span className="absolute left-4 top-4 rounded-full bg-ink/80 px-4 py-2 text-xs font-semibold text-white">
-                Image pending BEMCO verification
-              </span>
+          <Reveal>
+            <div>
+              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-muted">
+                <img
+                  src={project.img}
+                  alt={`${project.name} project image; project association pending verification`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <span className="absolute left-4 top-4 rounded-full bg-ink/80 px-4 py-2 text-xs font-semibold text-white">
+                  Image pending BEMCO verification
+                </span>
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                The project image is shown for review only. Its association with this project has
+                not been independently confirmed.
+              </p>
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              The project image is shown for review only. Its association with this project has not
-              been independently confirmed.
-            </p>
-          </div>
-          <div className="space-y-8">
+          </Reveal>
+          <Reveal delay={0.1} className="space-y-8">
             <section>
               <h2 className="text-xl font-bold text-ink">Project overview</h2>
               <p className="mt-3 leading-relaxed text-muted-foreground">
@@ -105,26 +108,27 @@ function ProjectDetail() {
             >
               Enquire about a project <ArrowRight className="h-4 w-4" />
             </Link>
-          </div>
+          </Reveal>
         </div>
       </section>
       <section className="bg-[#eff5f6] py-16 md:py-20">
         <div className="container-x">
           <SectionHead eyebrow="Explore more" title="Related projects" />
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {relatedProjects.map((related) => (
-              <Link
-                key={related.slug}
-                to="/projects/$slug"
-                params={{ slug: related.slug }}
-                className="rounded-xl border border-border bg-white p-5 transition-colors hover:border-primary"
-              >
-                <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                  {related.type}
-                </span>
-                <h3 className="mt-2 font-bold text-ink">{related.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{related.location}</p>
-              </Link>
+            {relatedProjects.map((related, index) => (
+              <Reveal key={related.slug} delay={index * 0.07}>
+                <Link
+                  to="/projects/$slug"
+                  params={{ slug: related.slug }}
+                  className="block rounded-xl border border-border bg-white p-5 transition-colors hover:border-primary"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    {related.type}
+                  </span>
+                  <h3 className="mt-2 font-bold text-ink">{related.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{related.location}</p>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>

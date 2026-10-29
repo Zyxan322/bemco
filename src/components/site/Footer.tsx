@@ -2,34 +2,37 @@ import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
 import logo from "@/assets/bemco-logo.webp";
 import { companyStatistics, contact, nav, products } from "@/lib/site";
-import { Counter } from "./motion";
+import { Counter, Reveal } from "./motion";
 
 export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-border bg-surface">
       <div className="pointer-events-none absolute inset-0 grid-lines opacity-40" />
       <div className="container-x relative grid gap-12 py-20 md:grid-cols-12">
-        <div className="md:col-span-4">
+        <Reveal className="md:col-span-4">
           <img src={logo} alt="BEMCO Aluminum logo" className="h-20 w-auto" loading="lazy" />
           <p className="mt-6 max-w-sm leading-relaxed text-muted-foreground">
             Building Experts Co. for Metal Industries — design, engineering, fabrication and
             installation of façade systems and architectural aluminium & glass, since{" "}
             <Counter to={companyStatistics.foundedYear} />.
           </p>
-        </div>
-        <div className="md:col-span-2">
+        </Reveal>
+        <Reveal delay={0.06} className="md:col-span-2">
           <h3 className="eyebrow">Company</h3>
           <ul className="mt-5 space-y-3 text-sm">
             {nav.map((n) => (
               <li key={n.to}>
-                <Link to={n.to} className="text-foreground/80 hover:text-primary">
+                <Link
+                  to={n.to}
+                  className="text-foreground/80 transition-colors duration-200 hover:text-primary"
+                >
                   {n.label}
                 </Link>
               </li>
             ))}
           </ul>
-        </div>
-        <div className="md:col-span-2">
+        </Reveal>
+        <Reveal delay={0.12} className="md:col-span-2">
           <h3 className="eyebrow">Systems</h3>
           <ul className="mt-5 space-y-3 text-sm">
             {products.map((p) => (
@@ -37,19 +40,22 @@ export function Footer() {
                 <Link
                   to="/products/$slug"
                   params={{ slug: p.slug }}
-                  className="text-foreground/80 hover:text-primary"
+                  className="text-foreground/80 transition-colors duration-200 hover:text-primary"
                 >
                   {p.name}
                 </Link>
               </li>
             ))}
           </ul>
-        </div>
-        <div className="md:col-span-4">
+        </Reveal>
+        <Reveal delay={0.18} className="md:col-span-4">
           <h3 className="eyebrow">Contact</h3>
           <ul className="mt-5 space-y-4 text-sm">
             <li>
-              <a href={contact.phoneHref} className="flex items-center gap-3 hover:text-primary">
+              <a
+                href={contact.phoneHref}
+                className="flex items-center gap-3 transition-colors duration-200 hover:text-primary"
+              >
                 <Phone className="h-4 w-4 text-primary" />
                 {contact.phone}
               </a>
@@ -57,7 +63,7 @@ export function Footer() {
             <li>
               <a
                 href={`mailto:${contact.email}`}
-                className="flex items-center gap-3 hover:text-primary"
+                className="flex items-center gap-3 transition-colors duration-200 hover:text-primary"
               >
                 <Mail className="h-4 w-4 text-primary" />
                 {contact.email}
@@ -68,7 +74,7 @@ export function Footer() {
               {contact.address}
             </li>
           </ul>
-        </div>
+        </Reveal>
       </div>
       <div className="container-x relative">
         <div className="display select-none text-[18vw] leading-none text-ink/[0.04]">BEMCO</div>

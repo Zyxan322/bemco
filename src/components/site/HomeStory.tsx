@@ -25,7 +25,7 @@ export function HomeCapabilities() {
     <section id="services" className="scroll-mt-24 bg-ink py-24 text-white md:py-32">
       <div className="container-x">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <p className="eyebrow !text-brand-green">What we do</p>
             <h2 className="display mt-5 text-4xl text-white md:text-5xl">
               One partner for the building envelope.
@@ -34,7 +34,7 @@ export function HomeCapabilities() {
               From aluminium systems and glazing to façade fabrication and installation, BEMCO
               brings connected capabilities to architectural projects.
             </p>
-          </div>
+          </Reveal>
           <ArrowLink to="/services" variant="outline">
             Explore services
           </ArrowLink>
@@ -149,10 +149,10 @@ export function MissionStatement() {
                   src={selectedImage.src}
                   alt={selectedImage.alt}
                   className="absolute inset-0 h-full w-full object-cover"
-                  initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.06, x: 16 }}
+                  initial={false}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.55 }}
+                  transition={{ duration: reduceMotion ? 0.01 : 0.55 }}
                 />
               </AnimatePresence>
               <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/5 to-ink/10" />
@@ -311,84 +311,88 @@ export function ExpertiseExplorer() {
           text="Explore the disciplines that come together across BEMCO’s aluminium, glass and façade work."
         />
         <div className="mt-12 grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-          <div
-            role="tablist"
-            aria-label="BEMCO areas of expertise"
-            className="flex flex-col border-y border-border"
-          >
-            {expertise.map((item, index) => (
-              <button
-                key={item.title}
-                id={`expertise-tab-${index}`}
-                type="button"
-                role="tab"
-                aria-selected={active === index}
-                aria-controls="expertise-panel"
-                onClick={() => setActive(index)}
-                className={`flex min-h-16 items-center justify-between gap-4 border-b border-border px-2 text-left transition-colors last:border-b-0 hover:text-primary ${active === index ? "text-primary" : "text-foreground/65"}`}
-              >
-                <span className="flex items-center gap-4">
-                  <span className="text-xs font-bold tracking-widest text-primary/70">
-                    {String(index + 1).padStart(2, "0")}
+          <Reveal>
+            <div
+              role="tablist"
+              aria-label="BEMCO areas of expertise"
+              className="flex flex-col border-y border-border"
+            >
+              {expertise.map((item, index) => (
+                <button
+                  key={item.title}
+                  id={`expertise-tab-${index}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={active === index}
+                  aria-controls="expertise-panel"
+                  onClick={() => setActive(index)}
+                  className={`flex min-h-16 items-center justify-between gap-4 border-b border-border px-2 text-left transition-colors last:border-b-0 hover:text-primary ${active === index ? "text-primary" : "text-foreground/65"}`}
+                >
+                  <span className="flex items-center gap-4">
+                    <span className="text-xs font-bold tracking-widest text-primary/70">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="font-semibold">{item.title}</span>
                   </span>
-                  <span className="font-semibold">{item.title}</span>
-                </span>
-                <ArrowRight
-                  className={`h-4 w-4 shrink-0 transition-transform ${active === index ? "translate-x-1" : ""}`}
-                />
-              </button>
-            ))}
-            <div className="flex justify-end gap-2 py-4">
-              <button
-                type="button"
-                onClick={() => move(-1)}
-                aria-label="Previous expertise"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-ink transition-colors hover:border-primary hover:text-primary"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => move(1)}
-                aria-label="Next expertise"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-ink transition-colors hover:border-primary hover:text-primary"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </button>
+                  <ArrowRight
+                    className={`h-4 w-4 shrink-0 transition-transform ${active === index ? "translate-x-1" : ""}`}
+                  />
+                </button>
+              ))}
+              <div className="flex justify-end gap-2 py-4">
+                <button
+                  type="button"
+                  onClick={() => move(-1)}
+                  aria-label="Previous expertise"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-ink transition-colors hover:border-primary hover:text-primary"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => move(1)}
+                  aria-label="Next expertise"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-ink transition-colors hover:border-primary hover:text-primary"
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
             </div>
-          </div>
-          <div
-            id="expertise-panel"
-            role="tabpanel"
-            aria-labelledby={`expertise-tab-${active}`}
-            className="relative min-h-[380px] overflow-hidden rounded-3xl bg-ink text-white"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selected.title}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0"
-              >
-                <img
-                  src={selected.img}
-                  alt={selected.alt}
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover opacity-55"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-7 md:p-10">
-                  <p className="eyebrow !text-brand-green">
-                    0{active + 1} / 0{expertise.length}
-                  </p>
-                  <h3 className="mt-4 text-3xl font-bold">{selected.title}</h3>
-                  <p className="mt-3 max-w-xl leading-relaxed text-white/75">{selected.text}</p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div
+              id="expertise-panel"
+              role="tabpanel"
+              aria-labelledby={`expertise-tab-${active}`}
+              className="relative min-h-[380px] overflow-hidden rounded-3xl bg-ink text-white"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selected.title}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0"
+                >
+                  <img
+                    src={selected.img}
+                    alt={selected.alt}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover opacity-55"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-7 md:p-10">
+                    <p className="eyebrow !text-brand-green">
+                      0{active + 1} / 0{expertise.length}
+                    </p>
+                    <h3 className="mt-4 text-3xl font-bold">{selected.title}</h3>
+                    <p className="mt-3 max-w-xl leading-relaxed text-white/75">{selected.text}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -708,34 +712,40 @@ export function AboutCompany({ includeReach = true }: { includeReach?: boolean }
       {includeReach && (
         <section className="bg-[#eff5f6] py-20 md:py-24">
           <div className="container-x grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
-            <div>
+            <Reveal>
               <p className="eyebrow">Our reach</p>
               <h2 className="display mt-5 text-3xl text-ink md:text-4xl">
                 Growing through partnerships.
               </h2>
-            </div>
+            </Reveal>
             <div className="grid gap-6 sm:grid-cols-2">
-              <article className="border-t-2 border-primary pt-5">
-                <h3 className="text-xl font-bold text-ink">A Saudi foundation</h3>
-                <p className="mt-3 leading-relaxed text-muted-foreground">
-                  BEMCO is based in Riyadh and reports established partnerships with domestic
-                  companies.
-                </p>
-              </article>
-              <article className="border-t-2 border-brand-green pt-5">
-                <h3 className="text-xl font-bold text-ink">Regional ambition</h3>
-                <p className="mt-3 leading-relaxed text-muted-foreground">
-                  The company reports expanding its market to cities including Jeddah, Dammam, Taif,
-                  Jizan and Rafha, as well as the Middle East and Gulf area.
-                </p>
-              </article>
-              <article className="border-t-2 border-primary pt-5 sm:col-span-2">
-                <h3 className="text-xl font-bold text-ink">Quality and partnership</h3>
-                <p className="mt-3 leading-relaxed text-muted-foreground">
-                  BEMCO’s published company overview highlights quality management, professional
-                  teams, customer-oriented service and sincere, honest business partnerships.
-                </p>
-              </article>
+              <Reveal delay={0.06}>
+                <article className="border-t-2 border-primary pt-5">
+                  <h3 className="text-xl font-bold text-ink">A Saudi foundation</h3>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">
+                    BEMCO is based in Riyadh and reports established partnerships with domestic
+                    companies.
+                  </p>
+                </article>
+              </Reveal>
+              <Reveal delay={0.12}>
+                <article className="border-t-2 border-brand-green pt-5">
+                  <h3 className="text-xl font-bold text-ink">Regional ambition</h3>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">
+                    The company reports expanding its market to cities including Jeddah, Dammam,
+                    Taif, Jizan and Rafha, as well as the Middle East and Gulf area.
+                  </p>
+                </article>
+              </Reveal>
+              <Reveal delay={0.18} className="sm:col-span-2">
+                <article className="border-t-2 border-primary pt-5">
+                  <h3 className="text-xl font-bold text-ink">Quality and partnership</h3>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">
+                    BEMCO’s published company overview highlights quality management, professional
+                    teams, customer-oriented service and sincere, honest business partnerships.
+                  </p>
+                </article>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -747,40 +757,42 @@ export function AboutCompany({ includeReach = true }: { includeReach?: boolean }
 export function CompanyProfileDownload() {
   return (
     <section id="company-profile" className="bg-[#eff5f6] py-12">
-      <div className="container-x flex flex-col gap-5 rounded-2xl border border-primary/15 bg-white p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
-        <div>
-          <p className="eyebrow">Company profile</p>
-          <h2 className="mt-2 text-2xl font-bold text-ink">BEMCO company profile</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            The company profile PDF is not present in the project files yet. Add the approved file
-            at <code className="rounded bg-muted px-1.5 py-0.5">public{companyProfile.path}</code>{" "}
-            to enable downloads.
-          </p>
+      <Reveal className="container-x">
+        <div className="flex flex-col gap-5 rounded-2xl border border-primary/15 bg-white p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
+          <div>
+            <p className="eyebrow">Company profile</p>
+            <h2 className="mt-2 text-2xl font-bold text-ink">BEMCO company profile</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              The company profile PDF is not present in the project files yet. Add the approved file
+              at <code className="rounded bg-muted px-1.5 py-0.5">public{companyProfile.path}</code>{" "}
+              to enable downloads.
+            </p>
+          </div>
+          {companyProfile.available ? (
+            <a
+              href={companyProfile.path}
+              download={companyProfile.filename}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink"
+            >
+              <Download className="h-4 w-4" /> Download company profile
+            </a>
+          ) : (
+            <button
+              type="button"
+              disabled
+              aria-describedby="profile-download-status"
+              className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full bg-primary/40 px-6 py-3.5 text-sm font-semibold text-white"
+            >
+              <Download className="h-4 w-4" /> Profile PDF unavailable
+            </button>
+          )}
+          <span id="profile-download-status" className="sr-only">
+            {companyProfile.available
+              ? "Download the BEMCO company profile PDF."
+              : `The company profile PDF is missing from public${companyProfile.path}.`}
+          </span>
         </div>
-        {companyProfile.available ? (
-          <a
-            href={companyProfile.path}
-            download={companyProfile.filename}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink"
-          >
-            <Download className="h-4 w-4" /> Download company profile
-          </a>
-        ) : (
-          <button
-            type="button"
-            disabled
-            aria-describedby="profile-download-status"
-            className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-full bg-primary/40 px-6 py-3.5 text-sm font-semibold text-white"
-          >
-            <Download className="h-4 w-4" /> Profile PDF unavailable
-          </button>
-        )}
-        <span id="profile-download-status" className="sr-only">
-          {companyProfile.available
-            ? "Download the BEMCO company profile PDF."
-            : `The company profile PDF is missing from public${companyProfile.path}.`}
-        </span>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -830,7 +842,7 @@ export function ServicesOverview() {
   ];
   return (
     <section className="container-x py-16 md:py-24">
-      <div className="mb-10 max-w-2xl">
+      <Reveal className="mb-10 max-w-2xl">
         <p className="eyebrow">BEMCO service areas</p>
         <h2 className="display mt-5 text-3xl text-ink md:text-4xl">
           Practical support for aluminium and glazing projects.
@@ -839,7 +851,7 @@ export function ServicesOverview() {
           Explore the work BEMCO offers. The final scope is agreed for each project against its
           requirements and specifications.
         </p>
-      </div>
+      </Reveal>
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {serviceDetails.map((service, index) => (
           <Reveal key={service.id} delay={index * 0.06}>
@@ -1019,7 +1031,7 @@ export function FrequentlyAskedQuestions({ includeContact = false }: { includeCo
   return (
     <section className="bg-[#eff5f6] py-20 md:py-24">
       <div className="container-x grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-        <div>
+        <Reveal>
           <p className="eyebrow">FAQs</p>
           <h2 className="display mt-5 text-3xl text-ink md:text-4xl">A few useful answers.</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
@@ -1032,19 +1044,21 @@ export function FrequentlyAskedQuestions({ includeContact = false }: { includeCo
               </ArrowLink>
             </div>
           )}
-        </div>
-        <Accordion type="single" collapsible className="border-t border-border">
-          {commonQuestions.map((item, index) => (
-            <AccordionItem key={item.question} value={`faq-${index}`}>
-              <AccordionTrigger className="py-5 text-base font-semibold text-ink hover:no-underline">
-                {item.question}
-              </AccordionTrigger>
-              <AccordionContent className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                {item.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <Accordion type="single" collapsible className="border-t border-border">
+            {commonQuestions.map((item, index) => (
+              <AccordionItem key={item.question} value={`faq-${index}`}>
+                <AccordionTrigger className="py-5 text-base font-semibold text-ink hover:no-underline">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Reveal>
       </div>
     </section>
   );
@@ -1095,143 +1109,155 @@ export function ContactEnquiry({ product }: { product?: string }) {
 
   return (
     <section className="container-x grid gap-12 py-20 md:py-28 lg:grid-cols-[0.75fr_1.25fr]">
-      <div>
-        <p className="eyebrow">Start a conversation</p>
-        <h2 className="display mt-5 text-4xl text-ink md:text-5xl">Tell us about your project.</h2>
-        <p className="mt-5 leading-relaxed text-muted-foreground">
-          Share your contact details and enquiry. Your message will be sent securely to BEMCO.
-        </p>
-        <div className="mt-8 space-y-4 text-sm">
-          <p>
-            <span className="font-semibold text-ink">Phone</span>
-            <br />
-            <a className="text-primary hover:underline" href="tel:+966554455348">
-              +966 55 44 55 348
-            </a>
+      <Reveal>
+        <div>
+          <p className="eyebrow">Start a conversation</p>
+          <h2 className="display mt-5 text-4xl text-ink md:text-5xl">
+            Tell us about your project.
+          </h2>
+          <p className="mt-5 leading-relaxed text-muted-foreground">
+            Share your contact details and enquiry. Your message will be sent securely to BEMCO.
           </p>
-          <p>
-            <span className="font-semibold text-ink">Email</span>
-            <br />
-            <a className="text-primary hover:underline" href="mailto:info@bemcoalu.com">
-              info@bemcoalu.com
-            </a>
-          </p>
-          <p>
-            <span className="font-semibold text-ink">Office</span>
-            <br />
-            <span className="text-muted-foreground">
-              Istanbol St., Mashael Area, Riyadh, Kingdom of Saudi Arabia
-            </span>
-          </p>
+          <div className="mt-8 space-y-4 text-sm">
+            <p>
+              <span className="font-semibold text-ink">Phone</span>
+              <br />
+              <a
+                className="text-primary transition-colors duration-200 hover:underline"
+                href="tel:+966554455348"
+              >
+                +966 55 44 55 348
+              </a>
+            </p>
+            <p>
+              <span className="font-semibold text-ink">Email</span>
+              <br />
+              <a
+                className="text-primary transition-colors duration-200 hover:underline"
+                href="mailto:info@bemcoalu.com"
+              >
+                info@bemcoalu.com
+              </a>
+            </p>
+            <p>
+              <span className="font-semibold text-ink">Office</span>
+              <br />
+              <span className="text-muted-foreground">
+                Istanbol St., Mashael Area, Riyadh, Kingdom of Saudi Arabia
+              </span>
+            </p>
+          </div>
         </div>
-      </div>
-      <form
-        onSubmit={submit}
-        className="space-y-5 rounded-3xl border border-border bg-white p-6 shadow-soft md:p-9"
-      >
-        <div className="grid gap-5 sm:grid-cols-2">
+      </Reveal>
+      <Reveal delay={0.1}>
+        <form
+          onSubmit={submit}
+          className="space-y-5 rounded-3xl border border-border bg-white p-6 shadow-soft md:p-9"
+        >
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="block text-sm font-semibold text-ink">
+              Full name *
+              <input
+                name="name"
+                required
+                minLength={2}
+                maxLength={100}
+                autoComplete="name"
+                className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </label>
+            <label className="block text-sm font-semibold text-ink">
+              Email address
+              <input
+                name="email"
+                type="email"
+                required
+                maxLength={254}
+                autoComplete="email"
+                className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </label>
+            <label className="block text-sm font-semibold text-ink">
+              Company <span className="font-normal text-muted-foreground">(optional)</span>
+              <input
+                name="company"
+                maxLength={120}
+                autoComplete="organization"
+                className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </label>
+            <label className="block text-sm font-semibold text-ink">
+              Phone <span className="font-normal text-muted-foreground">(optional)</span>
+              <input
+                name="phone"
+                type="tel"
+                maxLength={40}
+                autoComplete="tel"
+                className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </label>
+          </div>
           <label className="block text-sm font-semibold text-ink">
-            Full name *
-            <input
-              name="name"
+            Subject / enquiry type *
+            <select
+              name="subject"
               required
-              minLength={2}
-              maxLength={100}
-              autoComplete="name"
+              defaultValue={product ? "Products & systems" : ""}
               className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
-            />
+            >
+              <option value="" disabled>
+                Select an enquiry type
+              </option>
+              <option>General enquiry</option>
+              <option>Project enquiry</option>
+              <option>Quotation request</option>
+              <option>Products & systems</option>
+              <option>Manufacturing</option>
+            </select>
           </label>
+          {product && (
+            <label className="block text-sm font-semibold text-ink">
+              Product / system
+              <input
+                name="product"
+                value={product}
+                readOnly
+                className="mt-2 block w-full rounded-xl border border-input bg-muted px-4 py-3 font-normal text-muted-foreground"
+              />
+            </label>
+          )}
           <label className="block text-sm font-semibold text-ink">
-            Email address
-            <input
-              name="email"
-              type="email"
+            How can we help?
+            <textarea
+              name="message"
               required
-              maxLength={254}
-              autoComplete="email"
-              className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+              minLength={10}
+              maxLength={5000}
+              rows={5}
+              className="mt-2 block w-full resize-y rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </label>
-          <label className="block text-sm font-semibold text-ink">
-            Company <span className="font-normal text-muted-foreground">(optional)</span>
-            <input
-              name="company"
-              maxLength={120}
-              autoComplete="organization"
-              className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
-            />
+          <label aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+            Leave this field empty
+            <input name="website" tabIndex={-1} autoComplete="off" />
           </label>
-          <label className="block text-sm font-semibold text-ink">
-            Phone <span className="font-normal text-muted-foreground">(optional)</span>
-            <input
-              name="phone"
-              type="tel"
-              maxLength={40}
-              autoComplete="tel"
-              className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
-            />
-          </label>
-        </div>
-        <label className="block text-sm font-semibold text-ink">
-          Subject / enquiry type *
-          <select
-            name="subject"
-            required
-            defaultValue={product ? "Products & systems" : ""}
-            className="mt-2 block w-full rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          <button
+            type="submit"
+            disabled={submitting}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink"
           >
-            <option value="" disabled>
-              Select an enquiry type
-            </option>
-            <option>General enquiry</option>
-            <option>Project enquiry</option>
-            <option>Quotation request</option>
-            <option>Products & systems</option>
-            <option>Manufacturing</option>
-          </select>
-        </label>
-        {product && (
-          <label className="block text-sm font-semibold text-ink">
-            Product / system
-            <input
-              name="product"
-              value={product}
-              readOnly
-              className="mt-2 block w-full rounded-xl border border-input bg-muted px-4 py-3 font-normal text-muted-foreground"
-            />
-          </label>
-        )}
-        <label className="block text-sm font-semibold text-ink">
-          How can we help?
-          <textarea
-            name="message"
-            required
-            minLength={10}
-            maxLength={5000}
-            rows={5}
-            className="mt-2 block w-full resize-y rounded-xl border border-input bg-background px-4 py-3 font-normal outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
-          />
-        </label>
-        <label aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
-          Leave this field empty
-          <input name="website" tabIndex={-1} autoComplete="off" />
-        </label>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink"
-        >
-          {submitting ? "Sending enquiry…" : "Send enquiry"}
-          {!submitting && <ArrowRight className="h-4 w-4" />}
-        </button>
-        <p
-          role={notice?.type === "error" ? "alert" : "status"}
-          aria-live={notice?.type === "error" ? "assertive" : "polite"}
-          className={`text-sm ${notice?.type === "error" ? "text-destructive" : "text-primary"}`}
-        >
-          {notice?.message}
-        </p>
-      </form>
+            {submitting ? "Sending enquiry…" : "Send enquiry"}
+            {!submitting && <ArrowRight className="h-4 w-4" />}
+          </button>
+          <p
+            role={notice?.type === "error" ? "alert" : "status"}
+            aria-live={notice?.type === "error" ? "assertive" : "polite"}
+            className={`text-sm ${notice?.type === "error" ? "text-destructive" : "text-primary"}`}
+          >
+            {notice?.message}
+          </p>
+        </form>
+      </Reveal>
     </section>
   );
 }

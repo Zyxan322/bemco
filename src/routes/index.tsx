@@ -8,7 +8,7 @@ import {
   ProjectCarousel,
   SectionHead,
 } from "@/components/site/Sections";
-import { ArrowLink } from "@/components/site/motion";
+import { ArrowLink, Reveal } from "@/components/site/motion";
 import {
   CeoMessage,
   HomepageCompanyOverview,
@@ -79,7 +79,7 @@ function Index() {
       <section className="overflow-hidden bg-ink py-24 md:py-32">
         <div className="container-x">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-            <div className="max-w-2xl">
+            <Reveal className="max-w-2xl">
               <p className="eyebrow !text-brand-green">Featured projects</p>
               <h2 className="display mt-5 text-4xl text-white md:text-5xl">
                 Projects shaped around place.
@@ -88,7 +88,7 @@ function Index() {
                 Explore selected project listings from BEMCO’s portfolio. Project image associations
                 are marked for review where not yet verified.
               </p>
-            </div>
+            </Reveal>
             <ArrowLink to="/projects" variant="outline">
               View all projects
             </ArrowLink>
@@ -103,7 +103,9 @@ function Index() {
           text="The current image files do not include project provenance. These images are marked for BEMCO review and are not presented as verified project work."
         />
         <div className="mt-12">
-          <BeforeAfter />
+          <Reveal>
+            <BeforeAfter />
+          </Reveal>
         </div>
       </section>
       <ProjectJourney />

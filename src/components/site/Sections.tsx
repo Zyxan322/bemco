@@ -125,32 +125,37 @@ export function ProjectCarousel() {
         }}
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none]"
       >
-        {projects.map((p) => (
-          <Link
+        {projects.map((p, index) => (
+          <Reveal
             key={p.name}
-            to="/projects/$slug"
-            params={{ slug: p.slug }}
-            className="group relative aspect-[3/4] w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl sm:w-[380px]"
+            delay={(index % 3) * 0.07}
+            className="w-[78vw] shrink-0 snap-start sm:w-[380px]"
           >
-            <img
-              src={p.img}
-              alt={`${p.name}, ${p.location}`}
-              loading="lazy"
-              draggable={false}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/15 to-ink/5" />
-            <div className="absolute inset-x-6 bottom-6 text-white">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-green">
-                {p.type}
+            <Link
+              to="/projects/$slug"
+              params={{ slug: p.slug }}
+              className="group relative block aspect-[3/4] h-full w-full overflow-hidden rounded-2xl"
+            >
+              <img
+                src={p.img}
+                alt={`${p.name}, ${p.location}`}
+                loading="lazy"
+                draggable={false}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/15 to-ink/5" />
+              <div className="absolute inset-x-6 bottom-6 text-white">
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-green">
+                  {p.type}
+                </div>
+                <span className="absolute right-4 top-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white">
+                  Image pending review
+                </span>
+                <h3 className="mt-1 text-2xl font-bold">{p.name}</h3>
+                <p className="text-sm text-white/70">{p.location}</p>
               </div>
-              <span className="absolute right-4 top-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white">
-                Image pending review
-              </span>
-              <h3 className="mt-1 text-2xl font-bold">{p.name}</h3>
-              <p className="text-sm text-white/70">{p.location}</p>
-            </div>
-          </Link>
+            </Link>
+          </Reveal>
         ))}
       </div>
       <div className="mt-8 flex items-center gap-4 text-white">

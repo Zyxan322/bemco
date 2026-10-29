@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import ceoPortrait from "@/assets/ceo-portrait.webp";
@@ -81,8 +81,6 @@ export function HomepageCompanyOverview() {
 }
 
 export function HomepageMission() {
-  const reduceMotion = useReducedMotion();
-
   return (
     <section
       id="mission"
@@ -128,7 +126,7 @@ export function HomepageMission() {
             <div className="mt-5 flex items-center gap-4">
               <motion.span
                 aria-hidden="true"
-                initial={{ scaleX: reduceMotion ? 1 : 0 }}
+                initial={false}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
@@ -141,7 +139,7 @@ export function HomepageMission() {
           </Reveal>
           <Reveal delay={0.12}>
             <motion.figure
-              initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -169,8 +167,6 @@ export function HomepageMission() {
 }
 
 export function HomepageVision() {
-  const reduceMotion = useReducedMotion();
-
   return (
     <section
       id="vision"
@@ -229,8 +225,6 @@ export function HomepageVision() {
 }
 
 export function CeoMessage() {
-  const reduceMotion = useReducedMotion();
-
   return (
     <section className="homepage-motion homepage-ceo relative overflow-hidden bg-white py-10 md:py-14">
       <div className="container-x">
@@ -285,7 +279,7 @@ export function CeoMessage() {
           </Reveal>
           <Reveal>
             <motion.figure
-              initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}

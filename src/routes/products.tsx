@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
-import { PageHero } from "@/components/site/motion";
+import { PageHero, Reveal } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/Sections";
 import { images } from "@/lib/site";
 import { ProductGrid } from "@/components/site/Sections";
@@ -41,17 +41,19 @@ function ProductsPage() {
       </section>
       <section className="bg-ink py-20 text-white md:py-24">
         <div className="container-x grid gap-8 md:grid-cols-2 md:items-center">
-          <div>
+          <Reveal>
             <p className="eyebrow !text-brand-green">System selection</p>
             <h2 className="display mt-5 text-3xl text-white md:text-4xl">
               Start with the project requirements.
             </h2>
-          </div>
-          <p className="leading-relaxed text-white/70">
-            Opening type, building interfaces, visual intent, glazing and project specifications all
-            inform a suitable system choice. Product information is a starting point; final
-            selection should be checked against approved project documentation.
-          </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="leading-relaxed text-white/70">
+              Opening type, building interfaces, visual intent, glazing and project specifications
+              all inform a suitable system choice. Product information is a starting point; final
+              selection should be checked against approved project documentation.
+            </p>
+          </Reveal>
         </div>
       </section>
       <FrequentlyAskedQuestions includeContact />

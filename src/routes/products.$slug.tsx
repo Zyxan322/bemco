@@ -88,16 +88,18 @@ function ProductDetail() {
       </section>
 
       <section className="container-x grid gap-10 py-14 md:grid-cols-[0.65fr_1.35fr] md:py-20">
-        <div>
+        <Reveal>
           <p className="eyebrow">Product overview</p>
           <h2 className="display mt-4 text-3xl text-ink md:text-4xl">
             {product.name} from the BEMCO catalogue.
           </h2>
-        </div>
-        <p className="max-w-3xl self-center text-base leading-relaxed text-muted-foreground md:text-lg">
-          {product.desc} Confirm the applicable configuration and project suitability with BEMCO
-          against the project requirements.
-        </p>
+        </Reveal>
+        <Reveal delay={0.1} className="self-center">
+          <p className="max-w-3xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            {product.desc} Confirm the applicable configuration and project suitability with BEMCO
+            against the project requirements.
+          </p>
+        </Reveal>
       </section>
 
       {product.features.length > 0 && (
@@ -163,22 +165,25 @@ function ProductDetail() {
             </h2>
           </Reveal>
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedProducts.map((related) => (
-              <Link
-                key={related.id}
-                to="/products/$slug"
-                params={{ slug: related.slug }}
-                className="group border-t border-border p-4 transition-colors hover:border-primary"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
-                  {related.category}
-                </p>
-                <div className="mt-2 flex items-center justify-between gap-4">
-                  <h3 className="font-bold text-ink">{related.name}</h3>
-                  <ArrowRight className="h-4 w-4 text-primary transition-transform group-hover:translate-x-1" />
-                </div>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{related.desc}</p>
-              </Link>
+            {relatedProducts.map((related, index) => (
+              <Reveal key={related.id} delay={index * 0.07}>
+                <Link
+                  to="/products/$slug"
+                  params={{ slug: related.slug }}
+                  className="group block border-t border-border p-4 transition-colors hover:border-primary"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+                    {related.category}
+                  </p>
+                  <div className="mt-2 flex items-center justify-between gap-4">
+                    <h3 className="font-bold text-ink">{related.name}</h3>
+                    <ArrowRight className="h-4 w-4 text-primary transition-transform group-hover:translate-x-1" />
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {related.desc}
+                  </p>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </section>

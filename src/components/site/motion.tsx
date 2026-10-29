@@ -1,11 +1,4 @@
-import {
-  animate,
-  motion,
-  useInView,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
@@ -25,13 +18,22 @@ export function Reveal({
   y?: number;
 }) {
   const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [motionReady, setMotionReady] = useState(false);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver !== "undefined") setMotionReady(true);
+  }, []);
+
+  const visible = reduce || !motionReady || inView;
   return (
     <motion.div
+      ref={ref}
       className={className}
-      initial={{ opacity: 0, y: reduce ? 0 : y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, ease, delay }}
+      initial={false}
+      animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y }}
+      transition={{ duration: reduce ? 0 : 0.6, ease, delay: reduce ? 0 : delay }}
     >
       {children}
     </motion.div>
@@ -42,7 +44,6 @@ export function Parallax({
   src,
   alt,
   className,
-  strength = 60,
   eager,
 }: {
   src: string;
@@ -51,52 +52,85 @@ export function Parallax({
   strength?: number;
   eager?: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [-strength, strength]);
-  const fullBleed = typeof className === "string" && className.includes("absolute");
+  const fullBleed = typeof className === "string" && /(^|\s)absolute(\s|$)/.test(className);
+  const containerClassName = cn("relative overflow-hidden", className, fullBleed && "h-full");
 
   return (
-    <div
-      ref={ref}
-      className={cn("relative overflow-hidden", className, fullBleed && "h-full")}
-    >
-      <motion.img
+    <div className={containerClassName}>
+      <img
         src={src}
         alt={alt}
         loading={eager ? "eager" : "lazy"}
-        style={{ y, scale: 1.18 }}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full scale-[1.08] object-cover"
       />
     </div>
   );
 }
 
-export function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
+export function Counter({
+  to,
+  prefix = "",
+  suffix = "",
+}: {
+  to: number;
+  prefix?: string;
+  suffix?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
   const reduceMotion = useReducedMotion();
-  const [value, setValue] = useState(0);
+  const completed = useRef(false);
 
   useEffect(() => {
     if (!inView) return;
-    if (reduceMotion) {
-      setValue(to);
+
+    const element = ref.current;
+    if (!element) return;
+
+    const decimals = Math.max(0, `${to}`.split(".")[1]?.length ?? 0);
+    const formatter = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
+    const format = (value: number) => `${prefix}${formatter.format(value)}${suffix}`;
+    if (reduceMotion || completed.current) {
+      element.textContent = format(to);
+      completed.current = true;
       return;
     }
 
-    const animation = animate(0, to, {
-      duration: 1.8,
-      ease: "easeOut",
-      onUpdate: (latest) => setValue(Math.round(latest)),
-    });
-    return () => animation.stop();
-  }, [inView, reduceMotion, to]);
+    const duration = 1500;
+    let startTime: number | null = null;
+    let frame = 0;
+
+    const update = (timestamp: number) => {
+      startTime ??= timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - (1 - progress) ** 3;
+      element.textContent = format(to * eased);
+
+      if (progress < 1) {
+        frame = requestAnimationFrame(update);
+      } else {
+        element.textContent = format(to);
+        completed.current = true;
+      }
+    };
+
+    frame = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frame);
+  }, [inView, prefix, reduceMotion, suffix, to]);
+
+  const decimals = Math.max(0, `${to}`.split(".")[1]?.length ?? 0);
+  const initialValue = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(to);
 
   return (
     <span ref={ref} aria-live="off">
-      {value.toLocaleString("en-US")}
+      {prefix}
+      {initialValue}
       {suffix}
     </span>
   );
@@ -171,7 +205,7 @@ export function PageHero({
       <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/25" />
       <div className="container-x relative">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease }}
           className="max-w-3xl"
