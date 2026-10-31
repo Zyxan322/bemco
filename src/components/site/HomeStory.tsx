@@ -3,6 +3,7 @@ import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Download } from "lucide
 import { Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   capabilities,
   companyProfile,
@@ -96,6 +97,8 @@ export function HomeCapabilities() {
 export function MissionStatement() {
   const [activeImage, setActiveImage] = useState(0);
   const reduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+  const motionDisabled = reduceMotion || isMobile;
   const visualSlides = [
     {
       src: images.hero1,
@@ -136,11 +139,16 @@ export function MissionStatement() {
           <div className="group [perspective:1400px]">
             <motion.div
               whileHover={{
-                rotateY: reduceMotion ? 0 : -4,
-                rotateX: reduceMotion ? 0 : 2,
-                scale: reduceMotion ? 1 : 1.02,
+                rotateY: motionDisabled ? 0 : -4,
+                rotateX: motionDisabled ? 0 : 2,
+                scale: motionDisabled ? 1 : 1.02,
               }}
-              transition={{ type: "spring", stiffness: 160, damping: 18 }}
+              transition={{
+                type: "spring",
+                stiffness: 160,
+                damping: 18,
+                duration: motionDisabled ? 0 : undefined,
+              }}
               className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-2xl [transform-style:preserve-3d]"
             >
               <AnimatePresence mode="wait">
@@ -151,8 +159,8 @@ export function MissionStatement() {
                   className="absolute inset-0 h-full w-full object-cover"
                   initial={false}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: reduceMotion ? 0.01 : 0.55 }}
+                  exit={motionDisabled ? undefined : { opacity: 0, scale: 0.98 }}
+                  transition={{ duration: motionDisabled ? 0 : 0.55 }}
                 />
               </AnimatePresence>
               <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/5 to-ink/10" />
@@ -298,6 +306,7 @@ const expertise = [
 
 export function ExpertiseExplorer() {
   const [active, setActive] = useState(0);
+  const isMobile = useIsMobile();
   const selected = expertise[active];
   if (!selected) return null;
   const move = (direction: number) =>
@@ -369,10 +378,10 @@ export function ExpertiseExplorer() {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selected.title}
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={isMobile ? false : { opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3 }}
+                  exit={isMobile ? undefined : { opacity: 0, y: -8 }}
+                  transition={{ duration: isMobile ? 0 : 0.3 }}
                   className="absolute inset-0"
                 >
                   <img

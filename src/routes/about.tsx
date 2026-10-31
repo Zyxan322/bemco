@@ -13,6 +13,7 @@ import {
 } from "@/components/site/HomeStory";
 import { CeoMessage } from "@/components/site/HomepageEditorial";
 import { Reveal } from "@/components/site/motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
@@ -30,7 +31,13 @@ export const Route = createFileRoute("/about")({
       },
     ],
   }),
-  component: () => (
+  component: AboutPage,
+});
+
+function AboutPage() {
+  const isMobile = useIsMobile();
+
+  return (
     <>
       <PageHero
         eyebrow="About Us"
@@ -53,7 +60,7 @@ export const Route = createFileRoute("/about")({
             <motion.a
               key={item.href}
               href={item.href}
-              whileHover={{ x: 4 }}
+              whileHover={isMobile ? undefined : { x: 4 }}
               className="group flex items-center justify-between rounded-xl border border-border bg-white px-5 py-4 text-sm font-semibold text-ink transition-colors hover:border-primary hover:text-primary"
             >
               <span>
@@ -76,5 +83,5 @@ export const Route = createFileRoute("/about")({
       <VisionStatement />
       <CtaBand />
     </>
-  ),
-});
+  );
+}

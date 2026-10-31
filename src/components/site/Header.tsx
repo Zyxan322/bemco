@@ -4,12 +4,14 @@ import { Menu, X, ArrowRight, Phone, Mail, MapPin, Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import logo from "@/assets/bemco-logo.webp";
 import { contact, nav } from "@/lib/site";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ease } from "./motion";
 
 export function Header() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
   const path = useRouterState({ select: (s) => s.location.pathname });
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 40));
   useEffect(() => setOpen(false), [path]);
@@ -110,10 +112,10 @@ export function Header() {
         {open && (
           <motion.div
             className="fixed inset-0 z-[60] glass xl:hidden"
-            initial={{ opacity: 0 }}
+            initial={isMobile ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: isMobile ? 0 : 0.3 }}
           >
             <div className="container-x flex h-24 items-center justify-between">
               <img src={logo} alt="BEMCO Aluminum logo" className="h-12 w-auto" />
@@ -129,9 +131,13 @@ export function Header() {
               {nav.map((n, i) => (
                 <motion.div
                   key={n.to}
-                  initial={{ opacity: 0, x: 24 }}
+                  initial={isMobile ? false : { opacity: 0, x: 24 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 * i, duration: 0.4, ease }}
+                  transition={{
+                    delay: isMobile ? 0 : 0.05 * i,
+                    duration: isMobile ? 0 : 0.4,
+                    ease,
+                  }}
                 >
                   <Link
                     to={n.to}

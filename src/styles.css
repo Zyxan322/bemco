@@ -450,6 +450,15 @@
 }
 
 @media (max-width: 767px) {
+  html,
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
   .homepage > section:not(.homepage-hero) {
     padding-block: 2.75rem;
   }

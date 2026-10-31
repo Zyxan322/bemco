@@ -13,6 +13,7 @@ import { useRouterState } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -121,6 +122,7 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const isMobile = useIsMobile();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -129,7 +131,7 @@ function RootComponent() {
         key={path}
         initial={false}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: isMobile ? 0 : 0.5 }}
       >
         <Outlet />
       </motion.main>

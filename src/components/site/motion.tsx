@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -18,6 +19,7 @@ export function Reveal({
   y?: number;
 }) {
   const reduce = useReducedMotion();
+  const isMobile = useIsMobile();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [motionReady, setMotionReady] = useState(false);
@@ -26,14 +28,18 @@ export function Reveal({
     if (typeof IntersectionObserver !== "undefined") setMotionReady(true);
   }, []);
 
-  const visible = reduce || !motionReady || inView;
+  const visible = reduce || isMobile || !motionReady || inView;
   return (
     <motion.div
       ref={ref}
       className={className}
       initial={false}
       animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y }}
-      transition={{ duration: reduce ? 0 : 0.6, ease, delay: reduce ? 0 : delay }}
+      transition={{
+        duration: reduce || isMobile ? 0 : 0.6,
+        ease,
+        delay: reduce || isMobile ? 0 : delay,
+      }}
     >
       {children}
     </motion.div>
@@ -79,6 +85,7 @@ export function Counter({
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
   const reduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const completed = useRef(false);
 
   useEffect(() => {
@@ -93,7 +100,7 @@ export function Counter({
       maximumFractionDigits: decimals,
     });
     const format = (value: number) => `${prefix}${formatter.format(value)}${suffix}`;
-    if (reduceMotion || completed.current) {
+    if (reduceMotion || isMobile || completed.current) {
       element.textContent = format(to);
       completed.current = true;
       return;
@@ -119,7 +126,7 @@ export function Counter({
 
     frame = requestAnimationFrame(update);
     return () => cancelAnimationFrame(frame);
-  }, [inView, prefix, reduceMotion, suffix, to]);
+  }, [inView, isMobile, prefix, reduceMotion, suffix, to]);
 
   const decimals = Math.max(0, `${to}`.split(".")[1]?.length ?? 0);
   const initialValue = new Intl.NumberFormat("en-US", {

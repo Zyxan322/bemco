@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import ceoPortrait from "@/assets/ceo-portrait.webp";
 import overviewImage from "@/assets/project-1.webp";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { companyProfileContent, companyStatistics, contact, images } from "@/lib/site";
 import { ArrowLink, Counter, Parallax, Reveal } from "./motion";
 
@@ -81,6 +82,7 @@ export function HomepageCompanyOverview() {
 }
 
 export function HomepageMission() {
+  const isMobile = useIsMobile();
   return (
     <section
       id="mission"
@@ -129,7 +131,11 @@ export function HomepageMission() {
                 initial={false}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                transition={{
+                  duration: isMobile ? 0 : 0.9,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: isMobile ? 0 : 0.2,
+                }}
                 className="homepage-mission-rule h-[2px] w-16 origin-left bg-brand-green"
               />
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">
@@ -142,7 +148,7 @@ export function HomepageMission() {
               initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: isMobile ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="homepage-mission-visual relative mx-auto aspect-[4/3] w-full overflow-hidden bg-ink shadow-[0_18px_45px_rgba(2,6,23,0.28)]"
             >
               <Parallax
@@ -225,6 +231,7 @@ export function HomepageVision() {
 }
 
 export function CeoMessage() {
+  const isMobile = useIsMobile();
   return (
     <section className="homepage-motion homepage-ceo relative overflow-hidden bg-white py-10 md:py-14">
       <div className="container-x">
@@ -282,7 +289,7 @@ export function CeoMessage() {
               initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: isMobile ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="homepage-ceo-portrait relative mx-auto w-full max-w-[220px] md:max-w-none"
             >
               <div className="homepage-ceo-frame absolute -bottom-2 -left-2 right-3 top-3 border border-primary/40" />

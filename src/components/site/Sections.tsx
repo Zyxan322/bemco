@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, ChevronsLeftRight, Download } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { capabilities, companyProfile, facts, images, products, projects } from "@/lib/site";
 import { ArrowLink, Counter, Parallax, Reveal, SectionHead } from "./motion";
 
@@ -200,18 +201,19 @@ const steps = [
 
 export function Timeline() {
   const ref = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 80%", "end 60%"] });
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
   return (
     <div ref={ref} className="relative">
       <div className="absolute left-0 right-0 top-6 hidden h-px bg-border lg:block" />
       <motion.div
-        style={{ scaleX }}
+        style={{ scaleX: isMobile ? 1 : scaleX }}
         className="absolute left-0 right-0 top-6 hidden h-px origin-left bg-primary lg:block"
       />
       <div className="absolute bottom-0 left-6 top-0 w-px bg-border lg:hidden" />
       <motion.div
-        style={{ scaleY: scaleX }}
+        style={{ scaleY: isMobile ? 1 : scaleX }}
         className="absolute bottom-0 left-6 top-0 w-px origin-top bg-primary lg:hidden"
       />
       <div className="grid gap-10 lg:grid-cols-5">
@@ -312,7 +314,7 @@ export function BeforeAfter() {
       onPointerMove={(e) => dragging.current && move(e.clientX)}
       onPointerUp={() => (dragging.current = false)}
       onPointerCancel={() => (dragging.current = false)}
-      className="relative aspect-[16/10] w-full cursor-ew-resize touch-none select-none overflow-hidden rounded-2xl border border-border shadow-soft md:aspect-[21/9]"
+      className="relative aspect-[16/10] w-full cursor-ew-resize touch-none select-none overflow-hidden rounded-2xl border border-border shadow-soft"
     >
       <img
         src={images.after}

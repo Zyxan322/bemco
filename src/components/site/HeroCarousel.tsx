@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ArrowLink, ease } from "./motion";
 import { HeroBackgroundVideo } from "./HeroBackgroundVideo";
 
@@ -29,13 +30,15 @@ const slides = [
 
 export function HeroCarousel() {
   const [i, setI] = useState(0);
+  const isMobile = useIsMobile();
   const touchStart = useRef<number | null>(null);
   const go = (d: number) => setI((p) => (p + d + slides.length) % slides.length);
 
   useEffect(() => {
+    if (isMobile) return;
     const t = setTimeout(() => go(1), 4000);
     return () => clearTimeout(t);
-  }, [i]);
+  }, [i, isMobile]);
 
   const s = slides[i];
   if (!s) return null;
@@ -73,14 +76,14 @@ export function HeroCarousel() {
           <motion.div
             key={i}
             className="max-w-3xl"
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.4 }}
+            exit={isMobile ? undefined : { opacity: 0, y: -16 }}
+            transition={{ duration: isMobile ? 0 : 0.4 }}
           >
             <motion.div
               className="eyebrow flex items-center gap-3 !text-brand-green"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease }}
+              transition={{ duration: isMobile ? 0 : 0.6, ease }}
             >
               <span className="h-px w-8 bg-brand-green" /> BEMCO Aluminium & Glass · Riyadh
             </motion.div>
@@ -88,7 +91,7 @@ export function HeroCarousel() {
               className="display mt-6 text-5xl text-white sm:text-6xl lg:text-7xl"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease, delay: 0.1 }}
+              transition={{ duration: isMobile ? 0 : 0.8, ease, delay: isMobile ? 0 : 0.1 }}
             >
               {s.title}
             </motion.h1>
@@ -96,7 +99,7 @@ export function HeroCarousel() {
               className="mt-6 max-w-xl text-lg leading-relaxed text-white/80"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease, delay: 0.25 }}
+              transition={{ duration: isMobile ? 0 : 0.7, ease, delay: isMobile ? 0 : 0.25 }}
             >
               {s.text}
             </motion.p>
@@ -104,7 +107,7 @@ export function HeroCarousel() {
               className="mt-10 flex flex-wrap gap-3"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease, delay: 0.4 }}
+              transition={{ duration: isMobile ? 0 : 0.7, ease, delay: isMobile ? 0 : 0.4 }}
             >
               <ArrowLink to="/#expertise">Explore Our Expertise</ArrowLink>
               <ArrowLink to="/contact" variant="outline">
