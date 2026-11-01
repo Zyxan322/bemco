@@ -35,10 +35,9 @@ export function HeroCarousel() {
   const go = (d: number) => setI((p) => (p + d + slides.length) % slides.length);
 
   useEffect(() => {
-    if (isMobile) return;
     const t = setTimeout(() => go(1), 4000);
     return () => clearTimeout(t);
-  }, [i, isMobile]);
+  }, [i]);
 
   const s = slides[i];
   if (!s) return null;
@@ -117,7 +116,7 @@ export function HeroCarousel() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="container-x relative mt-5 flex items-center justify-center pb-3 text-white sm:absolute sm:inset-x-0 sm:bottom-7 sm:mt-0 sm:pb-0">
+        <div className="container-x absolute inset-x-0 bottom-5 flex items-center justify-center text-white sm:bottom-7">
           <a
             href="#company"
             className="absolute left-10 hidden items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/75 transition-colors hover:text-white sm:flex"
