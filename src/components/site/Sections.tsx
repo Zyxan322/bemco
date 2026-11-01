@@ -13,9 +13,9 @@ export function FactsStrip() {
         <Reveal
           key={f.label}
           delay={i * 0.08}
-          className="border-border p-8 even:border-l lg:border-l lg:first:border-l-0"
+          className="border-border p-4 even:border-l sm:p-8 lg:border-l lg:first:border-l-0"
         >
-          <div className="display text-4xl text-ink md:text-5xl">
+          <div className="display text-2xl text-ink min-[360px]:text-3xl md:text-5xl">
             <Counter to={f.value} suffix={f.suffix} />
           </div>
           <p className="mt-3 text-sm text-muted-foreground">{f.label}</p>

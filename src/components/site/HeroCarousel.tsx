@@ -44,7 +44,7 @@ export function HeroCarousel() {
   if (!s) return null;
   return (
     <section
-      className="homepage-hero relative h-[92svh] min-h-[560px] overflow-hidden bg-ink sm:min-h-[680px]"
+      className="homepage-hero relative h-auto min-h-[100svh] overflow-hidden bg-ink sm:h-[92svh] sm:min-h-[680px]"
       onKeyDown={(event) => {
         if (event.key === "ArrowLeft") go(-1);
         if (event.key === "ArrowRight") go(1);
@@ -71,7 +71,7 @@ export function HeroCarousel() {
       <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/15" />
       <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/20" />
 
-      <div className="container-x relative flex h-full flex-col justify-center pb-16 pt-20">
+      <div className="container-x relative flex h-auto min-h-[100svh] flex-col justify-center pb-8 pt-40 sm:h-full sm:min-h-0 sm:pb-16 sm:pt-20">
         <AnimatePresence mode="wait">
           <motion.div
             key={i}
@@ -88,7 +88,7 @@ export function HeroCarousel() {
               <span className="h-px w-8 bg-brand-green" /> BEMCO Aluminium & Glass · Riyadh
             </motion.div>
             <motion.h1
-              className="display mt-6 text-5xl text-white sm:text-6xl lg:text-7xl"
+              className="display mt-4 text-4xl text-white sm:mt-6 sm:text-6xl lg:text-7xl"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: isMobile ? 0 : 0.8, ease, delay: isMobile ? 0 : 0.1 }}
@@ -96,7 +96,7 @@ export function HeroCarousel() {
               {s.title}
             </motion.h1>
             <motion.p
-              className="mt-6 max-w-xl text-lg leading-relaxed text-white/80"
+              className="mt-4 max-w-xl text-base leading-relaxed text-white/80 sm:mt-6 sm:text-lg"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: isMobile ? 0 : 0.7, ease, delay: isMobile ? 0 : 0.25 }}
@@ -104,7 +104,7 @@ export function HeroCarousel() {
               {s.text}
             </motion.p>
             <motion.div
-              className="mt-10 flex flex-wrap gap-3"
+              className="mt-6 flex flex-wrap gap-3 sm:mt-10"
               initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: isMobile ? 0 : 0.7, ease, delay: isMobile ? 0 : 0.4 }}
@@ -117,7 +117,7 @@ export function HeroCarousel() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="container-x absolute inset-x-0 bottom-7 flex items-center justify-center text-white">
+        <div className="container-x relative mt-5 flex items-center justify-center pb-3 text-white sm:absolute sm:inset-x-0 sm:bottom-7 sm:mt-0 sm:pb-0">
           <a
             href="#company"
             className="absolute left-10 hidden items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/75 transition-colors hover:text-white sm:flex"

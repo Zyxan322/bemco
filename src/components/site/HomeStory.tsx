@@ -773,7 +773,10 @@ export function CompanyProfileDownload() {
             <h2 className="mt-2 text-2xl font-bold text-ink">BEMCO company profile</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               The company profile PDF is not present in the project files yet. Add the approved file
-              at <code className="rounded bg-muted px-1.5 py-0.5">public{companyProfile.path}</code>{" "}
+              at{" "}
+              <code className="break-all rounded bg-muted px-1.5 py-0.5">
+                public{companyProfile.path}
+              </code>{" "}
               to enable downloads.
             </p>
           </div>

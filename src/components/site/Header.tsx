@@ -43,7 +43,7 @@ export function Header() {
               <span className="hidden items-center gap-2 whitespace-nowrap lg:flex">
                 <Clock className="h-3.5 w-3.5" /> {contact.hours}
               </span>
-              <span className="flex items-center gap-2 whitespace-nowrap">
+              <span className="flex items-center gap-2 whitespace-nowrap max-[359px]:hidden">
                 <MapPin className="h-3.5 w-3.5 shrink-0" />
                 <span className="hidden sm:inline">{contact.address}</span>
                 <span className="sm:hidden">{contact.addressShort}</span>
@@ -111,7 +111,7 @@ export function Header() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[60] glass xl:hidden"
+            className="fixed inset-0 z-[60] overflow-y-auto glass xl:hidden"
             initial={isMobile ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
