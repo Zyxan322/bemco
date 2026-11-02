@@ -67,13 +67,29 @@ export const companyProfileContent = {
 } as const;
 
 export const facts = [
-  { value: companyStatistics.foundedYear, suffix: "", label: "Founded in January" },
-  { value: companyStatistics.factoryAreaSqm, suffix: "+ m²", label: "Reported factory area" },
-  { value: companyStatistics.workforce, suffix: "", label: "Total listed manpower" },
+  {
+    value: companyStatistics.foundedYear,
+    suffix: "",
+    label: "Founded in January",
+    useGrouping: false,
+  },
+  {
+    value: companyStatistics.factoryAreaSqm,
+    suffix: "+ m²",
+    label: "Reported factory area",
+    useGrouping: true,
+  },
+  {
+    value: companyStatistics.workforce,
+    suffix: "",
+    label: "Total listed manpower",
+    useGrouping: true,
+  },
   {
     value: companyStatistics.annualProductionCapacitySqm,
     suffix: "+ m²",
     label: "Reported annual capacity",
+    useGrouping: true,
   },
 ];
 

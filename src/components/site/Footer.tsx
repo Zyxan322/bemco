@@ -14,7 +14,7 @@ export function Footer() {
           <p className="mt-6 max-w-sm leading-relaxed text-muted-foreground">
             Building Experts Co. for Metal Industries — design, engineering, fabrication and
             installation of façade systems and architectural aluminium & glass, since{" "}
-            <Counter to={companyStatistics.foundedYear} />.
+            <Counter to={companyStatistics.foundedYear} useGrouping={false} />.
           </p>
         </Reveal>
         <Reveal delay={0.06} className="md:col-span-2">

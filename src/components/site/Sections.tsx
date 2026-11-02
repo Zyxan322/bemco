@@ -16,7 +16,7 @@ export function FactsStrip() {
           className="border-border p-4 even:border-l sm:p-8 lg:border-l lg:first:border-l-0"
         >
           <div className="display text-2xl text-ink min-[360px]:text-3xl md:text-5xl">
-            <Counter to={f.value} suffix={f.suffix} />
+            <Counter to={f.value} suffix={f.suffix} useGrouping={f.useGrouping} />
           </div>
           <p className="mt-3 text-sm text-muted-foreground">{f.label}</p>
         </Reveal>

@@ -35,7 +35,7 @@ export function HomepageCompanyOverview() {
                   Established
                 </p>
                 <p className="mt-1 text-sm font-semibold text-ink">
-                  January <Counter to={companyStatistics.foundedYear} />
+                  January <Counter to={companyStatistics.foundedYear} useGrouping={false} />
                 </p>
               </div>
               <div>

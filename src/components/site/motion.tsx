@@ -77,10 +77,12 @@ export function Counter({
   to,
   prefix = "",
   suffix = "",
+  useGrouping = true,
 }: {
   to: number;
   prefix?: string;
   suffix?: string;
+  useGrouping?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
@@ -96,6 +98,7 @@ export function Counter({
 
     const decimals = Math.max(0, `${to}`.split(".")[1]?.length ?? 0);
     const formatter = new Intl.NumberFormat("en-US", {
+      useGrouping,
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals,
     });
@@ -126,10 +129,11 @@ export function Counter({
 
     frame = requestAnimationFrame(update);
     return () => cancelAnimationFrame(frame);
-  }, [inView, isMobile, prefix, reduceMotion, suffix, to]);
+  }, [inView, isMobile, prefix, reduceMotion, suffix, to, useGrouping]);
 
   const decimals = Math.max(0, `${to}`.split(".")[1]?.length ?? 0);
   const initialValue = new Intl.NumberFormat("en-US", {
+    useGrouping,
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   }).format(to);
