@@ -6,13 +6,7 @@ import skylight from "@/assets/skylight.webp";
 import cta from "@/assets/cta.webp";
 import before from "@/assets/before.png";
 import after from "@/assets/After.png";
-import project1 from "@/assets/project-1.webp";
-import project2 from "@/assets/project-2.webp";
-import project3 from "@/assets/project-3.webp";
-import project4 from "@/assets/project-4.webp";
-import project5 from "@/assets/project-5.webp";
-import project6 from "@/assets/project-6.webp";
-import companyProfilePdf from "@/assets/BEMCO Profile (1).pdf?url";
+import companyProfilePdf from "@/assets/BEMCO Profile_31.Oct.pdf?url";
 
 export const images = { hero1, hero2, hero3, detail, skylight, cta, before, after };
 
@@ -176,42 +170,174 @@ export const products = [
   },
 ];
 
-export const projects = [
+export const projectCategories = [
+  "Commercial",
+  "Residential",
+  "Healthcare",
+  "Educational",
+  "Hospitality",
+  "Institutional",
+  "Industrial",
+  "High-Rise Buildings",
+] as const;
+
+export type ProjectCategory = (typeof projectCategories)[number];
+
+export type Project = {
+  slug: string;
+  name: string;
+  location: string;
+  category: ProjectCategory;
+  images: string[];
+};
+
+const projectImage = (slug: string, index: number) =>
+  `/images/projects/${slug}/${slug}-${String(index).padStart(2, "0")}.webp`;
+
+export const projects: Project[] = [
   {
-    slug: "hadab-tower",
-    name: "Hadab Tower",
+    slug: "the-waves-mall",
+    name: "The Waves Mall",
+    location: "Dammam - Al Khobar",
+    category: "Commercial",
+    images: Array.from({ length: 5 }, (_, i) => projectImage("the-waves-mall", i + 1)),
+  },
+  {
+    slug: "qairouan-project-north-industrial",
+    name: "Qairouan Project North Industrial",
+    location: "Dammam - Riyadh",
+    category: "Industrial",
+    images: Array.from(
+      { length: 5 },
+      (_, i) => projectImage("qairouan-project-north-industrial", i + 1),
+    ),
+  },
+  {
+    slug: "medical-village-project",
+    name: "Medical Village Project",
     location: "Riyadh",
-    type: "Commercial",
-    img: project1,
+    category: "Healthcare",
+    images: Array.from({ length: 4 }, (_, i) => projectImage("medical-village-project", i + 1)),
   },
   {
-    slug: "sheikh-abdul-rahman-tower",
-    name: "Sheikh Abdul Rahman Tower",
-    location: "Al-Ahsa",
-    type: "Commercial",
-    img: project2,
+    slug: "medical-village-project-admin-3",
+    name: "Medical Village Project Admin 3",
+    location: "Riyadh",
+    category: "Healthcare",
+    images: Array.from(
+      { length: 4 },
+      (_, i) => projectImage("medical-village-project-admin-3", i + 1),
+    ),
   },
-  { slug: "abha-hotel", name: "Abha Hotel", location: "Abha", type: "Hospitality", img: project3 },
+  {
+    slug: "al-ajlan-rivera-48",
+    name: "Al Ajlan Rivera 48",
+    location: "Riyadh",
+    category: "High-Rise Buildings",
+    images: [projectImage("al-ajlan-rivera-48", 1)],
+  },
+  {
+    slug: "hadab-tower-project",
+    name: "Hadab Tower Project",
+    location: "Riyadh",
+    category: "High-Rise Buildings",
+    images: Array.from({ length: 3 }, (_, i) => projectImage("hadab-tower-project", i + 1)),
+  },
+  {
+    slug: "commercial-building",
+    name: "Commercial Building",
+    location: "Riyadh",
+    category: "Commercial",
+    images: Array.from({ length: 3 }, (_, i) => projectImage("commercial-building", i + 1)),
+  },
+  {
+    slug: "talal-residence-kinan-project",
+    name: "Talal Residence Kinan Project",
+    location: "Riyadh",
+    category: "Residential",
+    images: Array.from(
+      { length: 3 },
+      (_, i) => projectImage("talal-residence-kinan-project", i + 1),
+    ),
+  },
+  {
+    slug: "special-school",
+    name: "Special School",
+    location: "Riyadh",
+    category: "Educational",
+    images: Array.from({ length: 3 }, (_, i) => projectImage("special-school", i + 1)),
+  },
+  {
+    slug: "hotel-project",
+    name: "Hotel Project",
+    location: "Riyadh",
+    category: "Hospitality",
+    images: [projectImage("hotel-project", 1)],
+  },
+  {
+    slug: "private-villa-projects",
+    name: "Private Villa Projects",
+    location: "Riyadh",
+    category: "Residential",
+    images: Array.from({ length: 5 }, (_, i) => projectImage("private-villa-projects", i + 1)),
+  },
+  {
+    slug: "khaled-bin-eid-al-arji-hospital-diabetic-foot-treatment",
+    name: "Khaled Bin Eid Al Arji Hospital Diabetic Foot Treatment",
+    location: "Al-Ahsa",
+    category: "Healthcare",
+    images: Array.from(
+      { length: 3 },
+      (_, i) => projectImage("khaled-bin-eid-al-arji-hospital-diabetic-foot-treatment", i + 1),
+    ),
+  },
+  {
+    slug: "residential-project-al-tilal-al-majdiyah",
+    name: "Residential Project Al Tilal Al Majdiyah",
+    location: "Riyadh",
+    category: "Residential",
+    images: Array.from(
+      { length: 3 },
+      (_, i) => projectImage("residential-project-al-tilal-al-majdiyah", i + 1),
+    ),
+  },
+  {
+    slug: "kordoba-school-project",
+    name: "Kordoba School Project",
+    location: "Riyadh",
+    category: "Educational",
+    images: Array.from({ length: 3 }, (_, i) => projectImage("kordoba-school-project", i + 1)),
+  },
+  {
+    slug: "al-dahayan-trading-project",
+    name: "Al Dahayan Trading Project",
+    location: "Riyadh",
+    category: "Commercial",
+    images: Array.from(
+      { length: 3 },
+      (_, i) => projectImage("al-dahayan-trading-project", i + 1),
+    ),
+  },
+  {
+    slug: "balcona-tower",
+    name: "Balcona Tower",
+    location: "Riyadh",
+    category: "High-Rise Buildings",
+    images: Array.from({ length: 3 }, (_, i) => projectImage("balcona-tower", i + 1)),
+  },
+  {
+    slug: "abha-project",
+    name: "Abha Project",
+    location: "Riyadh",
+    category: "High-Rise Buildings",
+    images: Array.from({ length: 2 }, (_, i) => projectImage("abha-project", i + 1)),
+  },
   {
     slug: "philippine-embassy",
     name: "Philippine Embassy",
     location: "Riyadh",
-    type: "Institutional",
-    img: project4,
-  },
-  {
-    slug: "qwqaa-medical-city",
-    name: "Qwqaa Medical City",
-    location: "Saudi Arabia",
-    type: "Healthcare",
-    img: project5,
-  },
-  {
-    slug: "al-dawoud-building",
-    name: "Al Dawoud Building",
-    location: "Saudi Arabia",
-    type: "Commercial",
-    img: project6,
+    category: "Institutional",
+    images: Array.from({ length: 4 }, (_, i) => projectImage("philippine-embassy", i + 1)),
   },
 ];
 

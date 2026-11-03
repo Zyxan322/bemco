@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/motion";
 import { CtaBand } from "@/components/site/Sections";
 import { images } from "@/lib/site";
-import { ProjectCarousel, ProjectMosaic, SectionHead } from "@/components/site/Sections";
+import { ProjectsPortfolio } from "@/components/site/ProjectsPortfolio";
 export const Route = createFileRoute("/projects")({
   head: () => ({
     meta: [
@@ -11,42 +11,34 @@ export const Route = createFileRoute("/projects")({
       { title: "Our Projects | BEMCO Aluminium & Glass" },
       {
         name: "description",
-        content: "Façade and glazing work across Riyadh, Al-Ahsa, Abha and beyond.",
+        content:
+          "Explore BEMCO's commercial, industrial, healthcare, education and residential projects in Saudi Arabia.",
       },
       { property: "og:title", content: "Our Projects | BEMCO" },
       {
         property: "og:description",
-        content: "Façade and glazing work across Riyadh, Al-Ahsa, Abha and beyond.",
+        content:
+          "Explore BEMCO's commercial, industrial, healthcare, education and residential projects in Saudi Arabia.",
       },
     ],
   }),
   component: () => (
     <>
       <PageHero
-        eyebrow="Our Projects"
+        eyebrow="BEMCO Project Portfolio"
         title="Our Projects"
-        text="Explore selected architectural aluminium, glass and façade projects from BEMCO’s portfolio."
+        text="Selected Projects & Completed Works"
         img={images.hero2}
       />
-      <section className="container-x py-20 md:py-28">
-        <SectionHead
-          eyebrow="Selected work"
-          title="Projects across a range of building types."
-          text="Project names, types and locations are shown as currently listed in BEMCO’s portfolio. Image associations, client details and project scopes require confirmation."
-        />
-        <div className="mt-12">
-          <ProjectMosaic />
-        </div>
-      </section>
-      <section className="bg-ink py-20 md:py-28">
-        <div className="container-x">
-          <SectionHead
-            eyebrow="Explore the portfolio"
-            title="A closer look at selected projects."
-          />
-          <div className="mt-10">
-            <ProjectCarousel />
-          </div>
+      <section className="container-x py-16 md:py-24">
+        <p className="max-w-4xl text-base leading-relaxed text-muted-foreground md:text-lg">
+          Our portfolio showcases BEMCO&apos;s expertise in architectural aluminum and glass
+          solutions across commercial, residential, healthcare, educational, and institutional
+          developments. Each project reflects our commitment to quality, precision, and
+          architectural excellence.
+        </p>
+        <div className="mt-10">
+          <ProjectsPortfolio />
         </div>
       </section>
       <CtaBand />

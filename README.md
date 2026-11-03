@@ -68,5 +68,5 @@ accepts the email. No enquiry database or file-attachment handling is configured
 
 ## Company profile PDF
 
-The BEMCO company profile PDF is available at `src/assets/BEMCO Profile (1).pdf` and is imported as
-a static asset. The profile buttons download it as `BEMCO-Company-Profile.pdf`.
+The BEMCO company profile PDF is available at `src/assets/BEMCO Profile_31.Oct.pdf` and is
+imported as a static asset. The profile buttons download it as `BEMCO-Company-Profile.pdf`.

@@ -252,31 +252,25 @@ export function CeoMessage() {
               At BEMCO Aluminum &amp; Glass, we believe that every successful project begins with a
               commitment to quality, precision, and trust.
             </p>
-            <details className="homepage-ceo-full group mt-3 max-w-3xl border-t border-border pt-3">
-              <summary className="w-fit cursor-pointer list-none text-xs font-semibold text-primary transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
-                <span className="group-open:hidden">Read the full CEO message</span>
-                <span className="hidden group-open:inline">Close full message</span>
-              </summary>
-              <div className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-                <p>
-                  Since our establishment, we have focused on strengthening our technical
-                  capabilities, improving our fabrication processes, and building lasting
-                  relationships with our clients, consultants, contractors, and business partners.
-                </p>
-                <p>
-                  We understand that every project comes with unique requirements and expectations.
-                  Through teamwork, technical expertise, and a quality-driven approach, we strive to
-                  turn architectural concepts into practical, reliable, and visually refined
-                  solutions.
-                </p>
-                <p>
-                  As we continue to develop our capabilities, we remain committed to continuous
-                  improvement, responsible project execution, and client satisfaction. I would like
-                  to thank our valued clients, partners, and dedicated team for their continued
-                  trust and contribution to our journey.
-                </p>
-              </div>
-            </details>
+            <div className="homepage-ceo-full mt-3 max-w-3xl space-y-3 border-t border-border pt-3 text-sm leading-6 text-muted-foreground">
+              <p>
+                Since our establishment, we have focused on strengthening our technical
+                capabilities, improving our fabrication processes, and building lasting
+                relationships with our clients, consultants, contractors, and business partners.
+              </p>
+              <p>
+                We understand that every project comes with unique requirements and expectations.
+                Through teamwork, technical expertise, and a quality-driven approach, we strive to
+                turn architectural concepts into practical, reliable, and visually refined
+                solutions.
+              </p>
+              <p>
+                As we continue to develop our capabilities, we remain committed to continuous
+                improvement, responsible project execution, and client satisfaction. I would like
+                to thank our valued clients, partners, and dedicated team for their continued
+                trust and contribution to our journey.
+              </p>
+            </div>
             <p className="mt-4 border-t border-border pt-3 text-sm font-semibold text-ink">
               Eng. Mudassar Sulehri
               <span className="mt-1 block font-normal text-muted-foreground">

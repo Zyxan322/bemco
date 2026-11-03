@@ -68,49 +68,6 @@ export function ProductGrid({
   );
 }
 
-export function ProjectMosaic() {
-  const spans = [
-    "md:col-span-7 md:row-span-2",
-    "md:col-span-5",
-    "md:col-span-5",
-    "md:col-span-4",
-    "md:col-span-4",
-    "md:col-span-4",
-  ];
-  return (
-    <div className="grid auto-rows-[260px] gap-5 md:grid-cols-12 md:auto-rows-[300px]">
-      {projects.map((p, i) => (
-        <Reveal key={p.name} delay={(i % 3) * 0.08} className={spans[i] ?? ""}>
-          <Link
-            to="/projects/$slug"
-            params={{ slug: p.slug }}
-            className="group relative block h-full overflow-hidden rounded-2xl"
-          >
-            <Parallax
-              src={p.img}
-              alt={p.name}
-              className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-              strength={30}
-            />
-            <div className="absolute inset-x-3 bottom-3 glass flex items-end justify-between rounded-xl border border-border/60 p-5">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                  {String(i + 1).padStart(2, "0")} · {p.location}
-                </div>
-                <span className="absolute right-4 top-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white">
-                  Image pending review
-                </span>
-                <h3 className="mt-1 text-xl font-bold text-ink">{p.name}</h3>
-              </div>
-              <ArrowUpRight className="h-5 w-5 text-ink transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-            </div>
-          </Link>
-        </Reveal>
-      ))}
-    </div>
-  );
-}
-
 export function ProjectCarousel() {
   const ref = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
@@ -138,16 +95,18 @@ export function ProjectCarousel() {
               className="group relative block aspect-[3/4] h-full w-full overflow-hidden rounded-2xl"
             >
               <img
-                src={p.img}
+                src={p.images[0]}
                 alt={`${p.name}, ${p.location}`}
                 loading="lazy"
                 draggable={false}
+                width={1200}
+                height={1600}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/15 to-ink/5" />
               <div className="absolute inset-x-6 bottom-6 text-white">
                 <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-green">
-                  {p.type}
+                  {p.category}
                 </div>
                 <span className="absolute right-4 top-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white">
                   Image pending review
